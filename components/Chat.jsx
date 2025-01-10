@@ -9,8 +9,8 @@ const Chat = () => {
             </div>
             <div className="flex-1 p-4 overflow-y-auto">
                 <div className="mb-4">
-                    <div className="bg-gray-200 p-3 rounded-lg inline-block">
-                        <p>Hello! How are you?</p>
+                    <div className="bg-black p-3 rounded-lg inline-block">
+                        <p className='text-white' > Hello! How are you?</p>
                         <span className="text-xs text-gray-500">10:00 AM</span>
                     </div>
                 </div>
