@@ -38,9 +38,10 @@ const RegisterComponent = () => {
                   });
               
                   if (res.error) {
+                    console.log("error during signin users");
                       console.log(res.error);
                   } else {
-                    window.location.href = "/sessions"; // Redirect on success
+                    window.location.href = "/dashboard"; // Redirect on success
                   }
             }
              
@@ -53,7 +54,8 @@ const RegisterComponent = () => {
                     console.log("User Exist With This Username");
                 }
                 console.error(`Error ${status}: ${message}`);
-                alert(message); // Display the error message to the user
+                // alert(message); 
+        
               } else {
                 // If no response, it might be a network error or timeout
                 console.error("Network error or timeout:", error.message);
