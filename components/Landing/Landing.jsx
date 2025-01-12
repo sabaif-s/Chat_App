@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { easeInOut, motion, useAnimation } from 'framer-motion';
 
 const typingAnimation = {
     hidden: { width: "auto" },
@@ -9,7 +9,7 @@ const typingAnimation = {
         transition: {
             type: "spring",
             stiffness: 50,
-            delay: 0.5,
+            delay: 12.5,
             duration: 2,
         },
     },
@@ -55,7 +55,7 @@ const LandingPage = () => {
             <motion.div
                 initial="hidden"
                 animate="visible"
-                variants={fadeIn(1)}
+                variants={fadeIn(2)}
             >
                 <div
                     className="w-full h-full relative transform scale-50 transition-transform duration-500 hover:scale-100"
@@ -76,40 +76,44 @@ const LandingPage = () => {
                         src="/landing/chat1.jpg"
                         alt=""
                         className="w-32 h-auto transform transition-transform duration-500 absolute top-2 left-2 object-cover"
-                        initial={{ x: -100 }}
-                        animate={{ x: 0 }}
-                        transition={{ delay: 1.5, duration: 1 }}
+                        initial={{ opacity:0, scale:0.9 }}
+                        animate={{ opacity:1,scale:1 }}
+                        transition={{ delay: 2.5, duration: 2 , ease:"easeInOut" }}
                     />
                     <motion.img
                         src="/landing/chat2.jpg"
                         alt=""
                         className="w-32 h-auto transform transition-transform duration-500 absolute top-20 right-2 object-cover"
-                        initial={{ x: 100 }}
-                        animate={{ x: 0 }}
-                        transition={{ delay: 2, duration: 1 }}
+                        initial={{ opacity:0, scale:0.9 }}
+                        animate={{ opacity:1,scale:1 }}
+                        transition={{ delay: 2.5, duration: 2 , ease:"easeInOut" }}
                     />
                     <motion.img
                         src="/landing/chat3.jpg"
                         alt=""
                         className="w-32 h-20 transform transition-transform duration-500 absolute top-40 left-2 object-cover"
-                        initial={{ x: -100 }}
-                        animate={{ x: 0 }}
-                        transition={{ delay: 2.5, duration: 1 }}
+                        initial={{ opacity:0, scale:0.9 }}
+                        animate={{ opacity:1,scale:1 }}
+                        transition={{ delay: 2.5, duration: 2 , ease:"easeInOut" }}
                     />
-                    {/* <div className='absolute -top-80 flex justify-center'>
-                        <img
-                            src="/landing/messageWriter.jpg"
-                            alt=""
-                            className="w-full h-auto transform transition-transform duration-500 object-cover"
-                        />
+                    <div className='absolute -top-80 flex justify-center w-full'>
+                    <motion.img
+                         src="/landing/messageWriter.jpg"
+                        alt=""
+                        className="w-2/3 h-auto transform transition-transform duration-500 object-cover" 
+                        initial={{ opacity:0, scale:0.9 }}
+                        animate={{ opacity:1,scale:1 }}
+                        transition={{ delay: 10, duration: 2 , ease:"easeInOut" }}
+                    />
+                        
                         <motion.div
-                            className='bg-red-300 absolute top-14 rounded-lg bg-opacity-10 p-4 flex justify-center items-center z-20'
+                            className='bg-red-300 absolute top-14 rounded-lg bg-opacity-10 py-4 px-8 flex justify-center items-center z-20'
                             style={{ width: "62%", height: "64%" }}
                             initial="hidden"
                             animate={controls}
                         >
                             <motion.span
-                                className='text-red-400 w-full text-center word-break'
+                                className='text-red-400 w-full  text-center word-break'
                                 initial="hidden"
                                 animate="visible"
                                 variants={typingAnimation}
@@ -117,7 +121,7 @@ const LandingPage = () => {
                                 Hi Guys! How Are You Is Everything Cool
                             </motion.span>
                         </motion.div>
-                    </div> */}
+                    </div>
                 </div>
             </motion.div>
             <motion.div
