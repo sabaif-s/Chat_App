@@ -41,6 +41,7 @@ const RegisterComponent = () => {
                     console.log("error during signin users");
                       console.log(res.error);
                   } else {
+                    localStorage.setItem("registeredUser",username);
                     window.location.href = "/dashboard"; // Redirect on success
                   }
             }

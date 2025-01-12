@@ -22,6 +22,8 @@ function  CreateRoom() {
           }
          )
          setCreatedLink(response.data.chatRoom.link);
+         const user=localStorage.getItem("registeredUser");
+         localStorage.setItem("myRoom",roomName);
          console.log(response.data.chatRoom);
       } catch (error) {
          console.log(error);
