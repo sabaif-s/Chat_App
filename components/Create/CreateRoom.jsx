@@ -101,11 +101,12 @@ const CreateRoomComponent = () => {
       setShowShare(true);
       const user = localStorage.getItem("registeredUser");
       localStorage.setItem("myRoom", roomName);
+      setIsProcessing(false);
       console.log(response.data.chatRoom);
     } catch (error) {
       console.log(error);
     } finally {
-    //   setIsProcessing(false);
+     console.log("Finally");
     }
   };
 
