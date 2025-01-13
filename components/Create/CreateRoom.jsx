@@ -15,28 +15,44 @@ const CopyMessage = ({ message }) => {
 
     // Reset the copied state after 2 seconds
     setTimeout(() => {
+        
       setIsCopied(false);
     }, 2000);
   };
 
   return (
-    <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow-md">
+    <div className="flex items-center mt-8 space-x-4 p-4 bg-gray-100 rounded-lg shadow-md">
       {/* Message Display */}
-      <p className="text-gray-700 text-lg">{message}</p>
+      <p className="text-gray-700 text-lg flex-1">{message}</p>
 
       {/* Copy Icon */}
       <div
-        className="cursor-pointer p-2 bg-blue-500 rounded-full text-white hover:bg-blue-600 transition"
+        className="cursor-pointer flex-1 p-2 bg-blue-500 rounded-full text-white hover:bg-blue-600 transition"
         onClick={handleCopy}
       >
         <FaCopy size={20} />
       </div>
+      <motion.span
+  className="float-right absolute top-16 text-green-400 left-4 text-2xl"
+  initial={{ opacity: 0, y: -20 }}
+  animate={{ opacity: 1, y: [0, -10, 0] }} // Bounce effect
+  transition={{
+    duration: 2, // Total time for one cycle
+    repeat: 4, // Loops infinitely
+    repeatType: "reverse", // Reverses animation direction
+    ease: "easeInOut",
+  }}
+>
+  Share With Your Friend
+</motion.span>
+       
+       
 
       {/* Copied Animation */}
       <AnimatePresence>
         {isCopied && (
           <motion.div
-            className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg"
+            className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg"
             initial={{ opacity: 0, scale: 0.8, y: -10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: -10 }}
@@ -150,14 +166,14 @@ const CreateRoomComponent = () => {
         >
           <input
             onChange={(e) => setUsername(e.target.value)}
-            value={username}
+            value={username || "" }
             type="text"
             placeholder="Username"
             className="p-2 border border-gray-300 rounded-lg"
           />
           <input
             onChange={(e) => setPassword(e.target.value)}
-            value={password}
+            value={password || ""}
             type="password"
             placeholder="Password"
             className="p-2 border border-gray-300 rounded-lg"
