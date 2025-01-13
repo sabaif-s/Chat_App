@@ -10,6 +10,9 @@ export default function Home() {
   const [user2Input, setUser2Input] = useState("");
   const [socketId, setSocketId] = useState(null);
    const [user,setUser]=useState(null);
+   const [heightState,setHeightState]=useState(null);
+  
+
   
   // Function to initialize socket connection when startChat is true
   useEffect(() => {
@@ -48,7 +51,11 @@ export default function Home() {
 
     
   }, []);
-
+  useEffect(()=>{
+  console.log(window.innerHeight);
+  setHeightState(window.innerHeight);
+  },[]);
+ 
   const handleBtnClicked = () => {
     setStartChat(!startChat); // Toggle chat state when button is clicked
   };
@@ -77,7 +84,10 @@ export default function Home() {
 
   return (
     <>
-    <LandingPage/>
+      {heightState !== null ? (
+        <LandingPage height={heightState} />
+      ) : null}
+   
    {
     false && (
       <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">

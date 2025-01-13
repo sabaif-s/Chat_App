@@ -1,6 +1,7 @@
 "use client";
 import React,{useEffect,useState} from 'react'
 import axios from 'axios';
+import CreateRoomComponent from '@/components/Create/CreateRoom';
 function  CreateRoom() {
     const [roomName,setRoomName]=useState("");
     const [joinUser,setJoinUser]=useState("");
@@ -31,7 +32,15 @@ function  CreateRoom() {
               
     }
   return (
-    <div className='flex flex-col gap-y-4 text-red-400' >
+    <>
+    {
+      true && (
+        <CreateRoomComponent/>
+      )
+    }
+     {
+      false && (
+        <div className='flex flex-col gap-y-4 text-red-400' >
         <input 
         onChange={(e)=>{
                   setRoomName(e.target.value)
@@ -65,6 +74,10 @@ function  CreateRoom() {
             }
         </div>
     </div>
+      )
+     }
+   
+    </>
   )
 }
 

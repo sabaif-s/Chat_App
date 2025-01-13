@@ -1,0 +1,30 @@
+{
+    "header": {
+      "title": "SEBAIF",
+      "subtitle": "ONLINE CHAT",
+      "description": "Stay Connected, Anywhere, Anytime"
+    },
+    "images": {
+      "mainImage": "/landing/mobile2.jpg",
+      "chatImages": [
+        "/landing/chat1.jpg",
+        "/landing/chat2.jpg",
+        "/landing/chat3.jpg",
+        "/landing/messageWriter.jpg",
+        "/landing/sabk.jpeg"
+      ]
+    },
+    "button": {
+      "joinText": "JOIN",
+      "createText": "CREATE"
+    },
+    "animation": {
+      "typingSpeed": 50,
+      "animationDelay": 12.5,
+      "imageTransitionDuration": 2
+    },
+    "messages": {
+      "displayText": "  Join now and chat with friends, make new ones, and stay in the loop—let's get talking!"
+    }
+  }
+  
