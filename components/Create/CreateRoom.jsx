@@ -4,14 +4,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import axios from 'axios';
 import { useToast } from '@/hooks/ToastContext';
 import { FaCopy } from "react-icons/fa";
+import DraggableCircle from '../drag/drag';
  
 
-const CopyMessage = ({ message }) => {
+const CopyMessage = ({ message,copied }) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = () => {
+    
     navigator.clipboard.writeText(message); // Copy the message to clipboard
     setIsCopied(true);
+    copied();
+    
 
     // Reset the copied state after 2 seconds
     setTimeout(() => {
@@ -74,6 +78,7 @@ const CreateRoomComponent = () => {
   const [createdLink,setCreatedLink]=useState("");
   const [showShare,setShowShare]=useState(false);
   const { showToast } = useToast();
+  const [showNextLink,setShowNextLink]=useState(false);
   const handleNextStep = () => {
     if(step == 1 && roomName == ""){
         triggerToast("You have to write a room","error")
@@ -125,6 +130,9 @@ const CreateRoomComponent = () => {
      console.log("Finally");
     }
   };
+  const handleCopied =()=>{
+    setShowNextLink(true);
+  }
 
   return (
     <div className="flex flex-col items-center justify-center h-screen"  style={{
@@ -188,8 +196,13 @@ const CreateRoomComponent = () => {
       )}
       {
         showShare && (
-            <CopyMessage message={createdLink} />
+            <CopyMessage message={createdLink} copied={handleCopied} />
             
+        )
+      }
+      {
+        showNextLink && (
+            <DraggableCircle room={roomName} link={createdLink} />
         )
       }
       {isProcessing && (

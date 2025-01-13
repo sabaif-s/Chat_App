@@ -8,10 +8,10 @@ const Chat = () => {
     const [collectionData,setCollectionData]=useState([]);
     const [inputData, setInputData] = useState("");
     const socketRef = useRef(null);
-
+   const roomName=localStorage.getItem("myRoom");
     useEffect(() => {
         const socket = io("http://localhost:3001/chat");
-        socket.emit("register_chats", { firstUser: "biiftuu", secondUser: "saboo" });
+        // socket.emit("register_chats", { firstUser: "biiftuu", secondUser: "saboo" });
         socket.on("new_message", (data) => {
             console.log(data);
             const newData={
@@ -47,7 +47,7 @@ console.log("collection data:",collectionData);
     return (
         <div className="flex flex-col h-screen bg-gray-100">
             <div className="bg-blue-500 text-white p-4">
-                <h2 className="text-lg font-semibold">Chat</h2>
+                <h2 className="text-lg font-semibold">{roomName || "chat"}</h2>
             </div>
             <div className="flex-1 p-4 overflow-y-auto">
             {/* <div  className="mb-4">
