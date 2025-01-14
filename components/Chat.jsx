@@ -17,7 +17,10 @@ const SelectionComponent = ({ elements, onSelect }) => (
         exit={{ opacity: 0, y: -20 }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => onSelect(element)}
+        onClick={() => {
+            onSelect(element,index);
+
+        }}
       >
         <h3 className="text-lg font-semibold text-gray-800">{element}</h3>
         <p className="text-gray-600 mt-2">{element}</p>
@@ -35,7 +38,9 @@ const Chat = () => {
   const [hideSelection, setHideSelection] = useState(false);
   const [activeRoom, setActiveRoom] = useState("");
   const [arrayRoom, setArrayRoom] = useState([]);
+  const [roomCollections,setRoomCollections]=useState([]);
   const [checkRoom,setCheckRoom]=useState(false);
+  const [sender,setSender]=useState(null);
   const { showToast } = useToast();
   const router = useRouter();
   const socketRef = useRef(null);
@@ -43,13 +48,30 @@ const Chat = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const roomName = localStorage.getItem("myRoom");
+     
       const roomName2 = localStorage.getItem("joinedRoom")
         ? JSON.parse(localStorage.getItem("joinedRoom")).roomName
         : null;
+        
+          const arrays=[
+            {
+                sender:roomName,
+                receiver:null
+            },
+            { 
+                 sender:null,
+                receiver:roomName2
+            }
+          ]
+          setRoomCollections((prev)=> [...prev,...arrays]);
       setArrayRoom([roomName, roomName2].filter(Boolean));
       setCheckRoom(true);
     }
   }, []);
+  useEffect(()=>{
+  console.log("Sender");
+  console.log(sender);
+  },[sender])
 
   useEffect(() => {
     if (checkRoom && arrayRoom.length == 0) {
@@ -76,7 +98,7 @@ const Chat = () => {
 
     socketRef.current.emit("send_message", {
       receiver: "saboo",
-      sender: "biiftuu",
+      sender: sender,
       room: activeRoom,
       message: inputData,
     });
@@ -86,7 +108,14 @@ const Chat = () => {
     setInputData("");
   };
 
-  const handleSelect = (element) => {
+  const handleSelect = (element,index) => {
+    console.log("selected index:" , roomCollections[index]);
+     if(roomCollections[index].sender != null){
+        setSender("owner");
+     }
+     else{
+        setSender("receiver");
+     }
     setActiveRoom(element);
     setHideSelection(true);
     setShowChat(true);
