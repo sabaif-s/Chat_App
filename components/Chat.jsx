@@ -128,11 +128,11 @@ const Chat = () => {
               }
               type="text"
               placeholder="Type a message..."
-              className="flex-1 border border-gray-300 p-2 rounded-lg mr-2"
+              className="flex-1 border border-gray-300 p-2 rounded-lg mr-2 text-blue-500 mb-40"
             />
             <button
               onClick={handleSendButton}
-              className="bg-blue-500 text-white p-2 rounded-lg"
+              className="bg-blue-500 max-h-12 text-white p-2 rounded-lg"
             >
               Send
             </button>
