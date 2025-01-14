@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/ToastContext";
 import { motion } from "framer-motion";
 import { io } from "socket.io-client";
+import axios from "axios";
 
 const SelectionComponent = ({ elements, onSelect }) => (
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
@@ -68,6 +69,26 @@ const Chat = () => {
       setCheckRoom(true);
     }
   }, []);
+  useEffect(()=>{
+    const getDataBackEnd = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3001/chat/messages/${activeRoom}`);
+            const messages = response.data;
+            const formattedMessages = messages.map((msg) => ({
+                message: msg.message,
+                owner: msg.sender === sender,
+            }));
+            console.log(formattedMessages);
+            setCollectionData(formattedMessages);
+        } catch (error) {
+            console.error("Error fetching messages:", error);
+            showToast("Failed to load messages", "error");
+        }
+    };
+  if(activeRoom != ""){
+    getDataBackEnd();
+  }
+  },[activeRoom]);
   useEffect(()=>{
   console.log("Sender");
   console.log(sender);
