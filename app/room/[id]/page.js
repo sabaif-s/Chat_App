@@ -4,14 +4,15 @@ import { useRouter } from "next/navigation";
 import { use } from "react";
 import axios from "axios";
 import Chat from "@/components/Chat";
+import JoinComponent from "@/components/join/JoinComponent";
 export default function BlogPostPage({ params }) {
    const router=useRouter();
     const { id } =use(params); // Access the dynamic route parameter
      const [roomName,setRoomName]=useState("");
      const [isCreator,setIsCreator]=useState(false);
      const [showComponent,setShowComponent]=useState(false);
-        const [joinUser,setJoinUser]=useState("");
-        const [password,setPassword]=useState("");
+     const [joinUser,setJoinUser]=useState("");
+     const [password,setPassword]=useState("");
         useEffect(()=>{
              if(localStorage.getItem("myRoom") || localStorage.getItem("joinedRoom")){
               console.log("Room Creator Joined Group");
@@ -60,7 +61,7 @@ export default function BlogPostPage({ params }) {
       <>
        {
         showComponent && isCreator && (
-                     <Chat/>
+                     <JoinComponent/>
         )
        }
        {
