@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect,useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { easeInOut, motion, useAnimation } from 'framer-motion';
 import data from "./Data.json";
 
@@ -29,6 +30,7 @@ const fadeIn = (delay = 0) => ({
 });
 
 const LandingPage = ({height}) => {
+    const router=useRouter();
     const controls = useAnimation();
     const [animateStart,setAnimateStart]=useState(false);
     const [displayedText, setDisplayedText] = useState('');
@@ -207,12 +209,26 @@ const LandingPage = ({height}) => {
              animate={{ opacity: 1, y: 0 }}  // End: visible and in place
              transition={{ duration: 0.8, ease: "easeInOut" }} // Smooth transition
            >
-             <button className="bg-blue-500 relative z-50 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+             <button
+             onClick={()=>{
+              console.log("clicked Chat");
+                router.push("/join");
+             }}
+             className="bg-blue-500 relative z-50 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
                JOIN
              </button>
              <button
              onClick={()=>{
+              console.log("clicked Chat");
+                router.push("/chat");
+             }}
+             className="bg-orange-500 relative z-50 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition">
+               CHAT
+             </button>
+             <button
+             onClick={()=>{
                console.log("clicked");
+               router.push("/create");
              }}
              className="bg-green-500 relative z-50 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition">
                CREATE
