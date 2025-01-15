@@ -103,16 +103,31 @@ const Chat = () => {
 
   useEffect(() => {
     const socket = io("http://localhost:3001/chat");
+   
     socket.on("new_message", (data) => {
+      console.log("new message accessed");
       const newData = { message: data.message, owner: false };
       setReceivedData((prev) => [...prev, data.message]);
       setCollectionData((prev) => [...prev, newData]);
     });
     socketRef.current = socket;
+    socketRef.current.emit("send_message", {
+      receiver: "saboo",
+      sender: sender,
+      room: activeRoom,
+      message: inputData,
+    });
+    const newData = { message: inputData, owner: true };
+    setCollectionData((prev) => [...prev, newData]);
+    setSendData((prev) => [...prev, inputData]);
+    setInputData("");
     return () => {
       socket.off("new_message");
     };
   }, []);
+  useEffect(()=>{
+    
+  },[]);
 
   const handleSendButton = () => {
     if (!inputData.trim()) return;

@@ -76,6 +76,7 @@ const CreateRoomComponent = () => {
   const [password, setPassword] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [createdLink,setCreatedLink]=useState("");
+  
   const [showShare,setShowShare]=useState(false);
   const { showToast } = useToast();
   const [showNextLink,setShowNextLink]=useState(false);
@@ -202,7 +203,7 @@ const CreateRoomComponent = () => {
       }
       {
         showNextLink && (
-            <DraggableCircle room={roomName} link={createdLink} />
+            <DraggableCircle room={roomName} link={"/chat"} />
         )
       }
       {isProcessing && (
