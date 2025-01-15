@@ -95,7 +95,7 @@ const CreateRoomComponent = () => {
    
   const handleCreateRoom = async () => {
      const userNAME=username.replace(/[^a-zA-Z]/g, '');
-     const passWordNew=password.replace(/[^a-zA-Z]/g, '');
+     const passWordNew = password.replace(/[^a-zA-Z0-9]/g, '');
      
     if(userNAME.length == 0){
         triggerToast("You have to set username of your friend","error")
@@ -123,9 +123,19 @@ const CreateRoomComponent = () => {
       setShowShare(true);
       const user = localStorage.getItem("registeredUser");
       localStorage.setItem("myRoom", roomName);
+      localStorage.setItem("roomLink",response.data.chatRoom.link);
       setIsProcessing(false);
       console.log(response.data.chatRoom);
     } catch (error) {
+        const status=error.response.status;
+        if(status == 400){
+          showToast(`There is A room With ${roomName} in the database`,'warning');
+          setIsProcessing(false);
+        }
+        else{
+          showToast(`Your Name Not Created Sorry!`,'warning');
+          setIsProcessing(false);
+        }
       console.log(error);
     } finally {
      console.log("Finally");

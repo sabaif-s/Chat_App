@@ -60,14 +60,15 @@ const StepOne = ({ roomName, setRoomName, nextStep }) => (
     initial={{ opacity: 0, x: -100 }}
     animate={{ opacity: 1, x: 0 }}
     transition={{ duration: 0.5 }}
+    className="text-yellow-400"
   >
-    <h2 className="text-xl font-semibold mb-4"> Enter Room Name</h2>
+    <h2 className="text-xl font-semibold mb-4 "> Enter Room Name</h2>
     <input
       type="text"
       value={roomName}
       onChange={(e) => setRoomName(e.target.value)}
       placeholder="Room Name"
-      className="w-full p-2 border border-gray-300 rounded mb-4"
+      className="w-full p-2 border border-gray-300 rounded mb-4 text-green-400 font-bold"
     />
     <button
       onClick={nextStep}
@@ -83,6 +84,7 @@ const StepTwo = ({ joinUser, setJoinUser, prevStep, nextStep }) => (
     initial={{ opacity: 0, x: 100 }}
     animate={{ opacity: 1, x: 0 }}
     transition={{ duration: 0.5 }}
+    className="text-yellow-400"
   >
     <h2 className="text-xl font-semibold mb-4">Enter User Name</h2>
     <input
@@ -90,7 +92,7 @@ const StepTwo = ({ joinUser, setJoinUser, prevStep, nextStep }) => (
       value={joinUser}
       onChange={(e) => setJoinUser(e.target.value)}
       placeholder="User Name"
-      className="w-full p-2 border border-gray-300 rounded mb-4"
+      className="w-full p-2 border border-gray-300 rounded mb-4 text-blue-400 font-semibold"
     />
     <div className="flex justify-between">
       <button
@@ -114,6 +116,7 @@ const StepThree = ({ password, setPassword, prevStep, onSubmit }) => (
     initial={{ opacity: 0, y: 100 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
+    className="text-pink-600"
   >
     <h2 className="text-xl font-semibold mb-4"> Enter Password</h2>
     <input
@@ -121,7 +124,7 @@ const StepThree = ({ password, setPassword, prevStep, onSubmit }) => (
       value={password}
       onChange={(e) => setPassword(e.target.value)}
       placeholder="Password"
-      className="w-full p-2 border border-gray-300 rounded mb-4"
+      className="w-full p-2 border border-gray-300 rounded mb-4 text-red-400 font-semibold"
     />
     <div className="flex justify-between">
       <button
@@ -147,6 +150,11 @@ const joinHandle = async (joinUser,password,roomName,router,showToast) => {
              showToast("Write All Credentials","error");
             return;
         }
+        const myRoom=localStorage.getItem("myRoom");
+        if(myRoom == roomName){
+          showToast("Its Your Room");
+          return router.push("/chat");
+        }
         const response= await axios.post("http://localhost:3001/checkChat",
           {
             roomName,
@@ -165,6 +173,7 @@ const joinHandle = async (joinUser,password,roomName,router,showToast) => {
           roomName,
         }
         localStorage.setItem("joinedRoom",JSON.stringify(savedObject));
+        
          router.push("/chat");
         console.log(savedObject);
       

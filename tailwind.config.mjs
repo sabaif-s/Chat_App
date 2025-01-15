@@ -12,6 +12,15 @@ export default {
         foreground: "var(--foreground)",
       },
     },
+    animation: {
+      bounce: 'bounce 1s infinite',
+    },
+    keyframes: {
+      bounce: {
+        '0%, 100%': { transform: 'translateX(1) translateY(1)' },
+        '50%': { transform: 'translateX(-1px) translateY(-1px)' },
+      },
+    },
   },
   plugins: [],
 };

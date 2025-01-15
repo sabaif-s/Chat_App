@@ -3,33 +3,160 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/ToastContext";
-import { motion } from "framer-motion";
+import { motion,AnimatePresence} from "framer-motion";
+import { FaRegCommentDots } from "react-icons/fa";
 import { io } from "socket.io-client";
+import { FaCopy } from "react-icons/fa";
 import axios from "axios";
+const CopyMessage = ({ message,copied }) => {
+  const [isCopied, setIsCopied] = useState(false);
 
-const SelectionComponent = ({ elements, onSelect }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-    {elements.map((element, index) => (
-      <motion.div
-        key={index}
-        className="bg-white shadow-lg rounded-lg p-4 cursor-pointer hover:shadow-xl transition-all duration-300"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => {
-            onSelect(element,index);
+  const handleCopy = () => {
+    
+    navigator.clipboard.writeText(message); // Copy the message to clipboard
+    setIsCopied(true);
+    copied();
+    
 
-        }}
+    // Reset the copied state after 2 seconds
+    setTimeout(() => {
+        
+      setIsCopied(false);
+    }, 2000);
+  };
+
+  return (
+    <div className="flex items-center mt-8 space-x-4 p-4 bg-gray-100 rounded-lg shadow-md">
+      {/* Message Display */}
+      <p className="text-gray-700 text-lg flex-1">{message}</p>
+
+      {/* Copy Icon */}
+      <div
+        className="cursor-pointer flex-1 p-2 bg-blue-500 rounded-full text-white hover:bg-blue-600 transition"
+        onClick={handleCopy}
       >
-        <h3 className="text-lg font-semibold text-gray-800">{element}</h3>
-        <p className="text-gray-600 mt-2">{element}</p>
-      </motion.div>
-    ))}
-  </div>
-);
+        <FaCopy size={20} />
+      </div>
+      <motion.span
+  className="float-right absolute top-16 text-green-400 left-4 text-2xl"
+  initial={{ opacity: 0, y: -20 }}
+  animate={{ opacity: 1, y: [0, -10, 0] }} // Bounce effect
+  transition={{
+    duration: 2, // Total time for one cycle
+    repeat: 4, // Loops infinitely
+    repeatType: "reverse", // Reverses animation direction
+    ease: "easeInOut",
+  }}
+>
+  Share With Your Friend
+</motion.span>
+       
+       
 
+      {/* Copied Animation */}
+      <AnimatePresence>
+        {isCopied && (
+          <motion.div
+            className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg"
+            initial={{ opacity: 0, scale: 0.8, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            Copied!
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+const SelectionComponent = ({ elements, onSelect }) => {
+  const link = localStorage.getItem("roomLink");
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 bg-gradient-to-b from-red-100 to-pink-200 h-screen">
+      {elements.map((element, index) => (
+        <motion.div
+          key={index}
+          className="flex items-start justify-between bg-white shadow-lg rounded-lg p-4 cursor-pointer hover:shadow-xl transition-all duration-300"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => {
+            onSelect(element, index);
+          }}
+        >
+          {/* Icon */}
+          <FaRegCommentDots className="text-blue-500 text-xl mr-3" />
+
+          {/* Text */}
+          <h3
+            className="px-4 py-2 bg-blue-500 text-white text-lg font-semibold rounded-lg hover:bg-blue-600 transition-all duration-300 cursor-pointer"
+          >
+            {element}
+          </h3>
+
+          {/* CopyMessage */}
+          {/* {
+            index == 0 &&  (
+              <CopyMessage message={link} />
+            )
+          } */}
+          
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+const TypingIndicator = () => {
+  return (
+    <div className="flex items-center space-x-2 ml-4 mb-4">
+      <span className="text-gray-600 text-sm">Typing</span>
+      <div className="flex space-x-1">
+        <motion.div
+          className="h-2 w-2 bg-gray-500 rounded-full"
+          animate={{ y: [0, -2, 0] }}
+          transition={{ repeat: Infinity, duration: 0.9, delay: 0 }}
+        ></motion.div>
+        <motion.div
+          className="h-2 w-2 bg-gray-500 rounded-full"
+          animate={{ y: [0, -2, 0] }}
+          transition={{ repeat: Infinity, duration: 0.9, delay: 0.3 }}
+        ></motion.div>
+        <motion.div
+          className="h-2 w-2 bg-gray-500 rounded-full"
+          animate={{ y: [0, -2, 0] }}
+          transition={{ repeat: Infinity, duration: 0.9, delay: 0.6 }}
+        ></motion.div>
+      </div>
+    </div>
+  );
+};
+
+const CurrentTime = ({date}) => {
+  const [time, setTime] = useState("");
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date(date);
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const isAM = hours < 12;
+      const formattedTime = `${hours % 12 || 12}:${minutes
+        .toString()
+        .padStart(2, "0")} ${isAM ? "AM" : "PM"}`;
+      setTime(formattedTime);
+    };
+
+    updateTime(); // Set the initial time
+    const interval = setInterval(updateTime, 1000); // Update every second
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, []);
+
+  return <span className="text-xs text-gray-500">{time}</span>;
+};
 const Chat = () => {
   const [sendData, setSendData] = useState([]);
   const [receivedData, setReceivedData] = useState([]);
@@ -42,6 +169,7 @@ const Chat = () => {
   const [roomCollections,setRoomCollections]=useState([]);
   const [checkRoom,setCheckRoom]=useState(false);
   const [sender,setSender]=useState(null);
+  const [showTyping,setShowTyping]=useState(false);
   const { showToast } = useToast();
   const router = useRouter();
   const socketRef = useRef(null);
@@ -77,6 +205,7 @@ const Chat = () => {
             const formattedMessages = messages.map((msg) => ({
                 message: msg.message,
                 owner: msg.sender === sender,
+                time:msg.time
             }));
             console.log(formattedMessages);
             setCollectionData(formattedMessages);
@@ -106,7 +235,7 @@ const Chat = () => {
    
     socket.on("new_message", (data) => {
       console.log("new message accessed");
-      const newData = { message: data.message, owner: false };
+      const newData = { message: data.message, owner: false};
       setReceivedData((prev) => [...prev, data.message]);
       setCollectionData((prev) => [...prev, newData]);
     });
@@ -117,6 +246,17 @@ const Chat = () => {
       room: activeRoom,
       message: inputData,
     });
+    
+    socketRef.current.emit("typing",{room:activeRoom,typing:false});
+    socket.on("typing",(data)=>{
+      console.log("typing triggered");
+      if(data){
+        setShowTyping(true);
+      }
+      else{
+        setShowTyping(false);
+      }
+    })
     const newData = { message: inputData, owner: true };
     setCollectionData((prev) => [...prev, newData]);
     setSendData((prev) => [...prev, inputData]);
@@ -125,9 +265,17 @@ const Chat = () => {
       socket.off("new_message");
     };
   }, []);
+  
   useEffect(()=>{
-    
-  },[]);
+     if(inputData != ""){
+      socketRef.current.emit("typing",{room:activeRoom,typing:true});
+      // setShowTyping(true);
+     }
+     else{
+      socketRef.current.emit("typing",{room:activeRoom,typing:false});
+      // setShowTyping(false);
+     }
+  },[inputData]);
 
   const handleSendButton = () => {
     if (!inputData.trim()) return;
@@ -160,7 +308,7 @@ const Chat = () => {
   return (
     <>
       {!hideSelection && (
-        <SelectionComponent elements={arrayRoom} onSelect={handleSelect} />
+        <SelectionComponent elements={arrayRoom}  onSelect={handleSelect} />
       )}
       {showChat && (
         <div className="flex flex-col h-screen bg-gray-100">
@@ -179,11 +327,20 @@ const Chat = () => {
                   }`}
                 >
                   <p className="text-white">{item.message}</p>
-                  <span className="text-xs text-gray-500">10:00 AM</span>
+                  <span className="text-xs text-gray-500">
+                  
+                    <CurrentTime date={item.time || Date.now() } />
+                  </span>
                 </div>
               </div>
             ))}
           </div>
+          {
+            showTyping && (
+              <TypingIndicator />
+            )
+          }
+         
           <div className="p-4 bg-white flex">
             <input
               value={inputData}
