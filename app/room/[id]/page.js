@@ -60,40 +60,11 @@ export default function BlogPostPage({ params }) {
     return (
       <>
        {
-        showComponent && isCreator && (
+        showComponent && (
                      <JoinComponent/>
         )
        }
-       {
-        showComponent && !isCreator && (
-          <div>
-          <h1>Blog Post ID: {id}</h1>
-          <input 
-      onChange={(e)=>{
-                setRoomName(e.target.value)
-      }}
-      value={roomName}
-           required
-       type="text" placeholder="Room Name" />
-      <input
-      required
-      onChange={(e)=>{
-          setJoinUser(e.target.value)
-}}
-value={joinUser}
-      type="text" placeholder="User Name" autoComplete='off' />
-      <input
-       onChange={(e)=>{
-          setPassword(e.target.value)
-}}
-value={password}
-      type="text" placeholder='Password' autoComplete="off" />
-      <button 
-      onClick={joinHandle}
-      >JOIN ROOM</button>
-      </div>
-        )
-       }
+       
        
         </>
     );
