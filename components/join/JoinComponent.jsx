@@ -155,7 +155,7 @@ const joinHandle = async (joinUser,password,roomName,router,showToast) => {
           showToast("Its Your Room");
           return router.push("/chat");
         }
-        const response= await axios.post("http://localhost:3001/checkChat",
+        const response= await axios.post(`${ process.env.NEXT_PUBLIC_LOCALBACKEND}/checkChat`,
           {
             roomName,
             joinUser,

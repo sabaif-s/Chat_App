@@ -71,7 +71,7 @@ const CopyMessage = ({ message,copied }) => {
   );
 };
 const SelectionComponent = ({ elements, onSelect }) => {
-  const link = localStorage.getItem("roomLink");
+   
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 bg-gradient-to-b from-red-100 to-pink-200 h-screen">
@@ -200,7 +200,7 @@ const Chat = () => {
   useEffect(()=>{
     const getDataBackEnd = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/chat/messages/${activeRoom}`);
+          const response = await axios.get(`${ process.env.NEXT_PUBLIC_LOCALBACKEND}/chat/messages/${activeRoom}`);
             const messages = response.data;
             const formattedMessages = messages.map((msg) => ({
                 message: msg.message,
@@ -231,7 +231,7 @@ const Chat = () => {
   }, [checkRoom]);
 
   useEffect(() => {
-    const socket = io("http://localhost:3001/chat");
+    const socket = io(`${ process.env.NEXT_PUBLIC_LOCALBACKEND}/chat`);
    
     socket.on("new_message", (data) => {
       console.log("new message accessed");

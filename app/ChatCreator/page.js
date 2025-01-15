@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 
 function  CreatorChatRoom() {
     useEffect(()=>{
-        const socket=io("http://localhost:3001/room");
+        const socket=io(`${ process.env.NEXT_PUBLIC_LOCALBACKEND}/room`);
         const myRoom=localStorage.getItem("myRoom");
         socket.emit("joinRoom",myRoom);
         socket.on("message",(data)=>{
