@@ -17,7 +17,7 @@ export default function Home() {
   // Function to initialize socket connection when startChat is true
   useEffect(() => {
      
-      socketRef.current = io( process.env.NEXT_PUBLIC_LOCALBACKEND);
+      socketRef.current = io(  process.env.NEXT_PUBLIC_DEPLOYBACKEND);
 
       // Listen for the 'connect' event to get the socket ID
       const socket = socketRef.current;

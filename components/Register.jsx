@@ -17,7 +17,7 @@ const RegisterComponent = () => {
         }
 
         try {
-            const response = await axios.post(`${ process.env.NEXT_PUBLIC_LOCALBACKEND}/register`, {
+            const response = await axios.post(`${  process.env.NEXT_PUBLIC_DEPLOYBACKEND}/register`, {
                 username,
                 password,
                 email

@@ -13,7 +13,7 @@ function  ChatRoom() {
        const {joinUser,roomName}=savedUserData;
        setFirstUser(joinUser);
        setRoomName(roomName);
-       socketRef.current = io(`${ process.env.NEXT_PUBLIC_LOCALBACKEND}/room`);
+       socketRef.current = io(`${  process.env.NEXT_PUBLIC_DEPLOYBACKEND}/room`);
        socketRef.current.emit("joinRoom",roomName);
        socketRef.current.on("message",(data)=>{
         console.log(data);

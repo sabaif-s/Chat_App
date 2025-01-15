@@ -107,7 +107,7 @@ const CreateRoomComponent = () => {
     }
     setIsProcessing(true);
     try {
-      const response = await axios.post(`${ process.env.NEXT_PUBLIC_LOCALBACKEND}/createChat`, {
+      const response = await axios.post(`${  process.env.NEXT_PUBLIC_DEPLOYBACKEND}/createChat`, {
         roomName,
         joinUser:username,
         password

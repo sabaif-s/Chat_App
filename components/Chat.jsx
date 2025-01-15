@@ -200,7 +200,7 @@ const Chat = () => {
   useEffect(()=>{
     const getDataBackEnd = async () => {
         try {
-          const response = await axios.get(`${ process.env.NEXT_PUBLIC_LOCALBACKEND}/chat/messages/${activeRoom}`);
+          const response = await axios.get(`${  process.env.NEXT_PUBLIC_DEPLOYBACKEND}/chat/messages/${activeRoom}`);
             const messages = response.data;
             const formattedMessages = messages.map((msg) => ({
                 message: msg.message,
@@ -231,7 +231,7 @@ const Chat = () => {
   }, [checkRoom]);
 
   useEffect(() => {
-    const socket = io(`${ process.env.NEXT_PUBLIC_LOCALBACKEND}/chat`);
+    const socket = io(`${  process.env.NEXT_PUBLIC_DEPLOYBACKEND}/chat`);
    
     socket.on("new_message", (data) => {
       console.log("new message accessed");
