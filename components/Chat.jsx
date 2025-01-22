@@ -509,7 +509,7 @@ const Chat = () => {
               initial={{ y: 100, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="bg-yellow-200 h-20 w-full px-6 z-40 absolute bottom-4 left-0"
+              className=" h-20 w-full px-6 z-40 absolute bottom-4 left-0"
             >
               <div className="w-full bg-[#F0F5FA] h-full rounded-lg px-2 flex justify-start items-center gap-x-2">
                 <img src="/chat/emoji.png" className="w-6 h-6 object-cover cursor-pointer" alt="" />

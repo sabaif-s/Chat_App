@@ -4,7 +4,7 @@ import JoinComponent from '@/components/join/JoinComponent';
 
 function  Join() {
   return (
-    <div>
+    <div className='h-full' >
         <JoinComponent/>
     </div>
   )
