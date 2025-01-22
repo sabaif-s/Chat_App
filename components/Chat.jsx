@@ -74,7 +74,11 @@ const SelectionComponent = ({ elements, onSelect }) => {
    
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 bg-gradient-to-b from-red-100 to-pink-200 h-screen">
+     <>
+    
+    <div
+     style={{width:"432px"}}
+    className="grid grid-cols-1 hidden sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 bg-gradient-to-b from-red-100 to-pink-200 h-full">
       {elements.map((element, index) => (
         <motion.div
           key={index}
@@ -108,6 +112,47 @@ const SelectionComponent = ({ elements, onSelect }) => {
         </motion.div>
       ))}
     </div>
+    <div style={{width:"432px"}} className="h-full overflow-y-auto flex justify-start py-2 flex-col gap-y-4"  >
+           <div className="bg-white rounded-lg flex px-2 justify-start items-center gap-x-2" >
+                <img src="/chat/search.png" className="w-10 h-10 object-cover" alt="" />
+                <input
+  type="text"
+  name=""
+  placeholder="Search"
+  className="text-gray-500 text-lg w-full bg-white h-full outline-none focus:ring-0 focus:border-transparent"
+  id=""
+/>
+           </div>
+           <div className="w-full bg-white rounded-lg py-4 px-2 flex flex-col items-start justify-start gap-y-4" >
+             <span className="text-black text-xl" >
+              People
+             </span>
+             <div className="flex flex-col w-full" >
+                      <div className="flex cursor-pointer text-gray-500 w-full border-b-2 border-gray-200 flex-row justify-between gap-x-2 items-center" >
+                        <div className="flex flex-row items-center py-2 justify-start gap-x-2" >
+                           <img src="/chat/profile.png" className="w-12 h-12 object-cover" alt="" />
+                           <div className="flex flex-col" >
+                              <span className="text-black text-lg" >
+                                ANIL
+                              </span>
+                              <span className="text-gray-500 text-sm" >
+                                April fool's day
+                              </span>
+                           </div>
+                        </div>
+                        <div className="flex flex-col items-center" >
+                                         <span>
+                                          Today,9.52pm
+                                         </span>
+                                         <img src="/chat/doubleThick.png" className="w-8 h-8" alt="" />
+                        </div>
+                      </div>
+                      
+             </div>
+
+           </div>
+    </div>
+    </>
   );
 };
 const TypingIndicator = () => {

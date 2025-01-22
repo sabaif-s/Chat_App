@@ -7,7 +7,9 @@ import "./globals.css";
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="w-full h-screen">
+      <body
+      style={{backgroundImage:`url(/landing/chat.jpg)` , backgroundSize:"cover" ,backgroundPosition:"center" }} 
+      className="w-full h-screen flex justify-center md:py-4">
         <ToastProvider>
           {children}
 

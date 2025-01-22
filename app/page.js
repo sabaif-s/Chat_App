@@ -84,8 +84,13 @@ export default function Home() {
 
   return (
     <>
+    <div className="w-full h-screen flex justify-center" >
+
+    
       {heightState !== null ? (
+        <div className="w-full h-full flex justify-center bg-gradient-to-r from-gray-300 to-gray-500" >
         <LandingPage height={heightState} />
+        </div>
       ) : null}
    
    {
@@ -170,7 +175,7 @@ export default function Home() {
     </div>
     )
    }
-   
+   </div>
     </>
   );
 }

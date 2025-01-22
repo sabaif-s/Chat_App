@@ -12,7 +12,7 @@ const DraggableCircle = ({room,link}) => {
       onClick={()=>{
                    router.push(link);
       }}
-        className="w-40 h-40 bg-blue-500 rounded-full shadow-lg flex items-center justify-center text-white text-lg font-semibold cursor-grab"
+        className="px-12 py-16 bg-blue-500 rounded-full shadow-lg flex items-center justify-center text-white text-lg font-semibold cursor-grab"
         drag
         dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
         whileDrag={{ scale: 1.2, rotate: 10 }}

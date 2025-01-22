@@ -25,7 +25,7 @@ const CopyMessage = ({ message,copied }) => {
   };
 
   return (
-    <div className="flex items-center mt-8 space-x-4 p-4 bg-gray-100 rounded-lg shadow-md">
+    <div className="flex items-center relative mt-8 space-x-4 p-4 bg-gray-100 rounded-lg shadow-md">
       {/* Message Display */}
       <p className="text-gray-700 text-lg flex-1">{message}</p>
 
@@ -36,19 +36,7 @@ const CopyMessage = ({ message,copied }) => {
       >
         <FaCopy size={20} />
       </div>
-      <motion.span
-  className="float-right absolute top-16 text-green-400 left-4 text-2xl"
-  initial={{ opacity: 0, y: -20 }}
-  animate={{ opacity: 1, y: [0, -10, 0] }} // Bounce effect
-  transition={{
-    duration: 2, // Total time for one cycle
-    repeat: 4, // Loops infinitely
-    repeatType: "reverse", // Reverses animation direction
-    ease: "easeInOut",
-  }}
->
-  Share With Your Friend
-</motion.span>
+    
        
        
 
@@ -146,13 +134,13 @@ const CreateRoomComponent = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen"  style={{
+    <div className="flex flex-col items-center justify-center h-full rounded-[24px] "  style={{
         backgroundImage: "url(/create/wallpaper1.jpg)",
-        backgroundSize: 'contain',  // This ensures the image keeps its aspect ratio
+        backgroundSize: 'cover',  // This ensures the image keeps its aspect ratio
         backgroundPosition: 'center', // Centers the image
         backgroundRepeat: 'no-repeat', // Prevents repeating the image
-        width: '100%',
-        height: '100vh',  // Adjust height as per your needs
+        width: '430px',
+        
       }} >
       {step === 1 && (
         <motion.div
