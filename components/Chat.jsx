@@ -421,10 +421,10 @@ const Chat = () => {
             exit={{ opacity: 0, y: 50 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
             style={{ width: "432px" }}
-            className="md:rounded-[36px] relative h-full overflow-y-scroll flex flex-col gap-y-4 px-4 pt-12 pb-36 bg-white"
+            className="md:rounded-[36px] relative h-full overflow-y-hidden overflow-x-hidden flex flex-col gap-y-4 px-4 pt-12 pb-36 bg-white"
           >
             {/* Header */}
-            <div className="w-full flex justify-start items-center gap-x-4 sticky z-50 top-0 h-10">
+            <div className="w-full flex  justify-start items-center gap-x-4 sticky z-50 top-0 h-10">
               <img
                 onClick={() => {
                   setHideSelection(false);
@@ -438,7 +438,7 @@ const Chat = () => {
             </div>
       
             {/* Chat Messages */}
-            <div className="w-full flex flex-col gap-y-4">
+            <div className="w-full flex flex-col overflow-y-auto scrollbar-hide gap-y-4">
               {collectionData.length > 0 &&
                 collectionData.map((item, index) => (
                   <motion.div
