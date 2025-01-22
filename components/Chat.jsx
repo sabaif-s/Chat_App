@@ -90,46 +90,9 @@ const SelectionComponent = ({ elements, onSelect }) => {
 
   return (
      <>
-    
-    <div
-     style={{width:"432px"}}
-    className="grid grid-cols-1 hidden sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 bg-gradient-to-b from-red-100 to-pink-200 h-full">
-      {elements.map((element, index) => (
-        <motion.div
-          key={index}
-          className="flex items-start justify-between bg-white shadow-lg rounded-lg p-4 cursor-pointer hover:shadow-xl transition-all duration-300"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => {
-            onSelect(element, index);
-          }}
-        >
-          {/* Icon */}
-          <FaRegCommentDots className="text-blue-500 text-xl mr-3" />
-
-          {/* Text */}
-          <h3
-            className="px-4 py-2 bg-blue-500 text-white text-lg font-semibold rounded-lg hover:bg-blue-600 transition-all duration-300 cursor-pointer"
-          >
-            {element}
-          </h3>
-
-          {/* CopyMessage */}
-          {/* {
-            index == 0 &&  (
-              <CopyMessage message={link} />
-            )
-          } */}
-          
-        </motion.div>
-      ))}
-    </div>
     <motion.div
       style={{ width: "432px" }}
-      className="h-full overflow-y-auto flex justify-start py-2 flex-col gap-y-4"
+      className="h-full overflow-y-auto flex bg-gradient-to-b from-[#9747FF] via-blue-300 to-blue-200 bg-opacity-80 justify-start py-2 flex-col gap-y-4"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -157,6 +120,9 @@ const SelectionComponent = ({ elements, onSelect }) => {
           {
             elements.map((element,index)=>(
               <motion.div
+              onClick={() => {
+                onSelect(element, index);
+              }}
               key={index}
               className="flex cursor-pointer text-gray-500 w-full border-b-2 border-gray-200 flex-row justify-between gap-x-2 items-center"
               variants={itemVariants}
@@ -165,7 +131,7 @@ const SelectionComponent = ({ elements, onSelect }) => {
               <div className="flex flex-row items-center py-2 justify-start gap-x-2">
                 <img src="/chat/profile.png" className="w-12 h-12 object-cover" alt="" />
                 <div className="flex flex-col">
-                  <span className="text-black text-lg">ANIL</span>
+                  <span className="text-black text-lg">  {element}</span>
                   <span className="text-gray-500 text-sm">April fool's day</span>
                 </div>
               </div>
