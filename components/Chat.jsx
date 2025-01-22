@@ -415,79 +415,120 @@ const Chat = () => {
       )}
        {
           showChat && (
-            <div style={{width:"432px"}} className=" md:rounded-[36px] relative h-full flex flex-col gap-y-4 px-4 pt-12 pb-4 bg-white" >
-            <div className="w-full flex justify-start items-center gap-x-4 sticky z-50 top-0 h-10" >
-                   <img src="/chat/close.png" className="w-10 h-10 object-cover cursor-pointer" alt="" />  
-                   <span className="text-lg text-black font-semibold" >Robert Fox</span> 
+            <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            style={{ width: "432px" }}
+            className="md:rounded-[36px] relative h-full flex flex-col gap-y-4 px-4 pt-12 pb-4 bg-white"
+          >
+            {/* Header */}
+            <div className="w-full flex justify-start items-center gap-x-4 sticky z-50 top-0 h-10">
+              <img
+                onClick={() => {
+                  setHideSelection(false);
+                  setShowChat(false);
+                }}
+                src="/chat/close.png"
+                className="w-10 h-10 object-cover cursor-pointer"
+                alt=""
+              />
+              <span className="text-lg text-black font-semibold">Robert Fox</span>
             </div>
-            <div className="w-full  flex flex-col gap-y-4" >
-            { collectionData.length > 0 && collectionData.map((item, index) => (
-<div key={index} className="w-full flex relative justify-between items-center gap-x-2">
-{item.owner ? (
-// Owner's message
-<div className="w-full flex justify-end items-center gap-x-2">
-<div className="px-2 py-4 bg-[#FF7622] relative rounded-[12px]">
-<span className="block word-break text-center px-4 overflow-x-hidden">
- {item.message}
-</span>
-<img
- src="/chat/doubleThick2.png"
- className="w-2 h-3 z-50 absolute -bottom-4 -right-2"
- alt=""
-/>
-<div className="absolute left-4 -bottom-4 text-sm">
- <span className="text-[#ABABAB] text-xs">
-   <CurrentTime date={item.time || Date.now()} />
- </span>
-</div>
-</div>
-<div className="w-10 h-10 bg-[#FFC6AE] rounded-full"></div>
-</div>
-) : (
-// Other user's message
-<div className="w-full flex justify-start items-center gap-x-2">
-<div className="w-10 h-10 bg-[#98A8B8] rounded-full"></div>
-<div className="px-2 py-4 bg-[#F0F5FA] relative rounded-[12px]">
-<span className="block word-break text-center text-[#32343E] px-4 overflow-x-hidden">
- {item.message}
-</span>
-<div className="absolute right-4 -bottom-4 text-sm">
- <span className="text-[#ABABAB] text-xs">
-   <CurrentTime date={item.time || Date.now()} />
- </span>
-</div>
-</div>
-</div>
-)}
-</div>
-))}
+      
+            {/* Chat Messages */}
+            <div className="w-full flex flex-col gap-y-4">
+              {collectionData.length > 0 &&
+                collectionData.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: item.owner ? 50 : -50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut", delay: index * 0.1 }}
+                    className="w-full flex relative justify-between items-center gap-x-2"
+                  >
+                    {item.owner ? (
+                      // Owner's message
+                      <div className="w-full flex justify-end items-center gap-x-2">
+                        <div className="px-2 py-4 bg-[#FF7622] relative rounded-[12px]">
+                          <span className="block word-break text-center px-4 overflow-x-hidden">
+                            {item.message}
+                          </span>
+                          <img
+                            src="/chat/doubleThick2.png"
+                            className="w-2 h-3 z-50 absolute -bottom-4 -right-2"
+                            alt=""
+                          />
+                          <div className="absolute left-4 -bottom-4 text-sm">
+                            <span className="text-[#ABABAB] text-xs">
+                              <CurrentTime date={item.time || Date.now()} />
+                            </span>
+                          </div>
+                        </div>
+                        <div className="w-10 h-10 bg-[#FFC6AE] rounded-full"></div>
+                      </div>
+                    ) : (
+                      // Other user's message
+                      <div className="w-full flex justify-start items-center gap-x-2">
+                        <div className="w-10 h-10 bg-[#98A8B8] rounded-full"></div>
+                        <div className="px-2 py-4 bg-[#F0F5FA] relative rounded-[12px]">
+                          <span className="block word-break text-center text-[#32343E] px-4 overflow-x-hidden">
+                            {item.message}
+                          </span>
+                          <div className="absolute right-4 -bottom-4 text-sm">
+                            <span className="text-[#ABABAB] text-xs">
+                              <CurrentTime date={item.time || Date.now()} />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+                {
+            showTyping && (
+              <TypingIndicator />
+            )
+          }
             </div>
-            <div className="bg-yellow-200 h-20 w-full px-6 z-40 absolute bottom-4 left-0" >
-               <div className="w-full bg-[#F0F5FA] h-full rounded-lg px-2 flex justify-start items-center gap-x-2" >
-                  <img src="/chat/emoji.png" className="w-6 h-6 object-cover cursor-pointer " alt="" />
-                  <div className="flex items-center w-full justify-center h-full">
+      
+            {/* Input Area */}
+            <motion.div
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="bg-yellow-200 h-20 w-full px-6 z-40 absolute bottom-4 left-0"
+            >
+              <div className="w-full bg-[#F0F5FA] h-full rounded-lg px-2 flex justify-start items-center gap-x-2">
+                <img src="/chat/emoji.png" className="w-6 h-6 object-cover cursor-pointer" alt="" />
+                <div className="flex items-center w-full justify-center h-full">
                   <textarea
-  value={inputData}
-  onChange={(e) => setInputData(e.target.value)}
-  onKeyDown={(e) => {
-    if (e.key === "Enter") {
-      e.preventDefault(); // Prevents the default behavior of moving to the next line
-      if (inputData) handleSendButton();
-    }
-  }}
-  name=""
-  placeholder="Write something"
-  className="outline-none h-2/3 w-full px-4 pt-4 text-[#ABABAB] text-sm rounded-lg border-2 bg-gray-800 word-break bg-white bg-opacity-0 transition duration-200 ease-in-out resize-none"
-  id=""
-  rows="1"
-/>
-</div>
-<img
-onClick={handleSendButton}
-src="/chat/sendBtn.png" className="w-10 h-10 object-cover cursor-pointer " alt="" />
-               </div>
-            </div>
-</div>
+                    value={inputData}
+                    onChange={(e) => setInputData(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        if (inputData) handleSendButton();
+                      }
+                    }}
+                    name=""
+                    placeholder="Write something"
+                    className="outline-none h-2/3 w-full px-4 pt-4 text-[#ABABAB] text-sm rounded-lg border-2 bg-gray-800 word-break bg-white bg-opacity-0 transition duration-200 ease-in-out resize-none"
+                    id=""
+                    rows="1"
+                  />
+                </div>
+                <img
+                  onClick={handleSendButton}
+                  src="/chat/sendBtn.png"
+                  className="w-10 h-10 object-cover cursor-pointer"
+                  alt=""
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+      
           )
         }
     </>
