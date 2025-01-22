@@ -100,7 +100,7 @@ const LandingPage = ({height}) => {
         {
             screenDetected && (
             
-                <div style={{width:"430px"}} className={`h-full rounded-[24px] bg-fuchsia-500 flex flex-col items-center ${false ? "justify-end gap-y-12":"justify-around"} overflow-hidden`}>
+                <div style={{width:"430px"}} className={`h-full md:rounded-[36px]  bg-fuchsia-500 flex flex-col items-center ${false ? "justify-end gap-y-12":"justify-around"} overflow-hidden`}>
                 <motion.div
          className="flex flex-col gap-y-4 items-center"
          initial="hidden"

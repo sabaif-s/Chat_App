@@ -8,6 +8,7 @@ import { FaRegCommentDots } from "react-icons/fa";
 import { io } from "socket.io-client";
 import { FaCopy } from "react-icons/fa";
 import axios from "axios";
+
 const CopyMessage = ({ message,copied }) => {
   const [isCopied, setIsCopied] = useState(false);
 
@@ -91,9 +92,10 @@ const SelectionComponent = ({ elements, onSelect }) => {
 
   return (
      <>
+          
     <motion.div
-      style={{ width: "432px" }}
-      className="h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-200 scroll flex bg-gradient-to-b from-[#9747FF] via-blue-300 to-blue-200 bg-opacity-80 justify-start py-2 flex-col gap-y-4"
+      style={{ width: "432px"}}
+      className="h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-green-100 scrollbar-track-blue-100  flex bg-gradient-to-b from-[#9747FF] via-blue-300 to-blue-200 bg-opacity-80 justify-start py-2 flex-col gap-y-4 custom-scrollbar"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -119,7 +121,7 @@ const SelectionComponent = ({ elements, onSelect }) => {
         <span className="text-black text-xl">People</span>
         <div className="flex flex-col w-full">
           {
-            testArray.map((element,index)=>(
+            elements.map((element,index)=>(
               <motion.div
               onClick={() => {
                 onSelect(element, index);
@@ -353,7 +355,7 @@ const Chat = () => {
       )}
       {showChat && (
          <> 
-        <div className="flex flex-col h-screen bg-gray-100 hidden">
+        <div className="flex flex-col h-screen hidden bg-gray-100 ">
           <div className="bg-blue-500 text-white p-4">
             <h2 className="text-lg font-semibold">{activeRoom}</h2>
           </div>
@@ -402,8 +404,68 @@ const Chat = () => {
             </button>
           </div>
         </div>
-        <div style={{width:"432px"}} className=" md:rounded-[36px] h-full bg-white" >
-
+        <div style={{width:"432px"}} className=" md:rounded-[36px] relative h-full flex flex-col gap-y-4 px-4 pt-12 pb-4 bg-white" >
+                       <div className="w-full flex justify-start items-center gap-x-4 sticky z-50 top-0 h-10" >
+                              <img src="/chat/close.png" className="w-10 h-10 object-cover cursor-pointer" alt="" />  
+                              <span className="text-lg text-black font-semibold" >Robert Fox</span> 
+                       </div>
+                       <div className="w-full  flex flex-col gap-y-4" >
+                       {collectionData.map((item, index) => (
+  <div key={index} className="w-full flex relative justify-between items-center gap-x-2">
+    {item.owner ? (
+      // Owner's message
+      <div className="w-full flex justify-end items-center gap-x-2">
+        <div className="px-2 py-4 bg-[#FF7622] relative rounded-[12px]">
+          <span className="block word-break text-center px-4 overflow-x-hidden">
+            {item.message}
+          </span>
+          <img
+            src="/chat/doubleThick2.png"
+            className="w-2 h-3 z-50 absolute -bottom-4 -right-2"
+            alt=""
+          />
+          <div className="absolute left-4 -bottom-4 text-sm">
+            <span className="text-[#ABABAB] text-xs">
+              <CurrentTime date={item.time || Date.now()} />
+            </span>
+          </div>
+        </div>
+        <div className="w-10 h-10 bg-[#FFC6AE] rounded-full"></div>
+      </div>
+    ) : (
+      // Other user's message
+      <div className="w-full flex justify-start items-center gap-x-2">
+        <div className="w-10 h-10 bg-[#98A8B8] rounded-full"></div>
+        <div className="px-2 py-4 bg-[#F0F5FA] relative rounded-[12px]">
+          <span className="block word-break text-center text-[#32343E] px-4 overflow-x-hidden">
+            {item.message}
+          </span>
+          <div className="absolute right-4 -bottom-4 text-sm">
+            <span className="text-[#ABABAB] text-xs">
+              <CurrentTime date={item.time || Date.now()} />
+            </span>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+))}
+                       </div>
+                       <div className="bg-yellow-200 h-20 w-full px-6 z-40 absolute bottom-4 left-0" >
+                          <div className="w-full bg-[#F0F5FA] h-full rounded-lg px-2 flex justify-start items-center gap-x-2" >
+                             <img src="/chat/emoji.png" className="w-6 h-6 object-cover cursor-pointer " alt="" />
+                             <div className="flex items-center w-full justify-center h-full">
+  <textarea
+    name=""
+    placeholder="Write something"
+    className="outline-none h-2/3 text-center w-full px-4 pt-4 text-[#ABABAB] text-sm rounded-lg border-2 bg-gray-800 word-break bg-white bg-opacity-0 transition duration-200 ease-in-out resize-none"
+    id=""
+    rows="1"
+  />
+</div>
+<img src="/chat/sendBtn.png" className="w-10 h-10 object-cover cursor-pointer " alt="" />
+                          </div>
+                       </div>
         </div>
        </>
       )}

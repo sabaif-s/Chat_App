@@ -19,3 +19,18 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+.custom-scrollbar::-webkit-scrollbar {
+  height: 4px; /* Adjust the height of the horizontal scrollbar */
+}
+ 
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: #629ef7; /* Tailwind gray-300 */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #66789c; /* Tailwind gray-200 */
+}
+.custom-scrollbar::-webkit-scrollbar-button {
+  display: none;
+}

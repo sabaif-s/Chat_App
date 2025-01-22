@@ -84,11 +84,11 @@ export default function Home() {
 
   return (
     <>
-    <div className="w-full h-screen flex justify-center" >
+    <div className="w-full h-full flex justify-center" >
 
     
       {heightState !== null ? (
-        <div className="w-full h-full flex justify-center bg-gradient-to-r from-gray-300 to-gray-500" >
+        <div className="w-full h-full md:py-4 flex justify-center" >
         <LandingPage height={heightState} />
         </div>
       ) : null}

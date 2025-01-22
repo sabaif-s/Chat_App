@@ -9,7 +9,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body
       style={{backgroundImage:`url(/landing/chat.jpg)` , backgroundSize:"cover" ,backgroundPosition:"center" }} 
-      className="w-full h-screen flex justify-center md:py-4">
+      className="w-full h-screen overflow-hidden flex items-end justify-center md:py-4">
         <ToastProvider>
           {children}
 

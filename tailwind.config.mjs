@@ -12,6 +12,9 @@ export default {
           thin: '1px', // Customize the thin scrollbar width
           DEFAULT: '4px', // Default scrollbar width
         },
+        height:{
+          small:"20px"
+        }
       },
       colors: {
         background: "var(--background)",
