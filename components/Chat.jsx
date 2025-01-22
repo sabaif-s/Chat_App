@@ -217,6 +217,7 @@ const Chat = () => {
   const { showToast } = useToast();
   const router = useRouter();
   const socketRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -312,7 +313,15 @@ const Chat = () => {
       socket.off("new_message");
     };
   }, []);
-  
+  useEffect(() => {
+    // Scroll to the bottom of the chat container when collectionData changes
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: "smooth", // Add smooth scrolling
+      });
+    }
+  }, [collectionData, showTyping]);
   useEffect(()=>{
      if(inputData != ""){
       socketRef.current.emit("typing",{room:activeRoom,typing:true});
@@ -438,7 +447,9 @@ const Chat = () => {
             </div>
       
             {/* Chat Messages */}
-            <div className="w-full flex flex-col overflow-y-auto scrollbar-hide gap-y-4">
+            <div
+            ref={chatContainerRef}
+            className="w-full flex flex-col overflow-y-auto scrollbar-hide gap-y-4">
               {collectionData.length > 0 &&
                 collectionData.map((item, index) => (
                   <motion.div
