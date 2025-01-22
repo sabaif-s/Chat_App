@@ -7,6 +7,12 @@ export default {
   ],
   theme: {
     extend: {
+      scrollbar: {
+        width: {
+          thin: '1px', // Customize the thin scrollbar width
+          DEFAULT: '4px', // Default scrollbar width
+        },
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
@@ -22,5 +28,9 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'),
+    require('tailwind-scrollbar-hide')
+  ],
+
 };

@@ -87,12 +87,13 @@ const SelectionComponent = ({ elements, onSelect }) => {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   };
+  const testArray=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
 
   return (
      <>
     <motion.div
       style={{ width: "432px" }}
-      className="h-full overflow-y-auto flex bg-gradient-to-b from-[#9747FF] via-blue-300 to-blue-200 bg-opacity-80 justify-start py-2 flex-col gap-y-4"
+      className="h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-200 scroll flex bg-gradient-to-b from-[#9747FF] via-blue-300 to-blue-200 bg-opacity-80 justify-start py-2 flex-col gap-y-4"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -118,7 +119,7 @@ const SelectionComponent = ({ elements, onSelect }) => {
         <span className="text-black text-xl">People</span>
         <div className="flex flex-col w-full">
           {
-            elements.map((element,index)=>(
+            testArray.map((element,index)=>(
               <motion.div
               onClick={() => {
                 onSelect(element, index);
@@ -351,7 +352,8 @@ const Chat = () => {
         <SelectionComponent elements={arrayRoom}  onSelect={handleSelect} />
       )}
       {showChat && (
-        <div className="flex flex-col h-screen bg-gray-100">
+         <> 
+        <div className="flex flex-col h-screen bg-gray-100 hidden">
           <div className="bg-blue-500 text-white p-4">
             <h2 className="text-lg font-semibold">{activeRoom}</h2>
           </div>
@@ -400,6 +402,10 @@ const Chat = () => {
             </button>
           </div>
         </div>
+        <div style={{width:"432px"}} className=" md:rounded-[36px] h-full bg-white" >
+
+        </div>
+       </>
       )}
     </>
   );
