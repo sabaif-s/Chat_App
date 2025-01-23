@@ -115,7 +115,7 @@ const SelectionComponent = ({ elements, onSelect }) => {
             readyRender && (
               <motion.div
               style={{ width: "432px"}}
-              className="h-full overflow-y-scroll rounded-[24px] scrollbar-thin scrollbar-thumb-green-100 scrollbar-track-blue-100  flex bg-gradient-to-b from-[#9747FF] via-blue-300 to-blue-200 bg-opacity-80 justify-start py-2 flex-col gap-y-4 custom-scrollbar"
+              className="h-full overflow-y-scroll py-12 px-4 rounded-[24px] scrollbar-thin scrollbar-thumb-green-100 scrollbar-track-blue-100  flex bg-gradient-to-b from-[#9747FF] via-blue-300 to-blue-200 bg-opacity-80 justify-start py-2 flex-col gap-y-4 custom-scrollbar"
               variants={containerVariants}
               initial="hidden"
               animate="visible"

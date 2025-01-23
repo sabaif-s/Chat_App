@@ -18,7 +18,7 @@ const JoinComponent = () => {
   const prevStep = () => setStep((prev) => Math.max(1, prev - 1));
 
   return (
-    <div style={{width:"432px"}} className="h-full rounded-[36px] flex flex-col items-center justify-center bg-gray-100 bg-opacity-50 p-4">
+    <div style={{width:"430px"}} className="h-full overflow-hidden rounded-[36px] flex flex-col items-center justify-center bg-gray-100 bg-opacity-50 p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
