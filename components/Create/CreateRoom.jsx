@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useToast } from '@/hooks/ToastContext';
 import { FaCopy } from "react-icons/fa";
 import DraggableCircle from '../drag/drag';
+import Image from 'next/image';
  
 
 const CopyMessage = ({ message,copied }) => {
@@ -134,14 +135,21 @@ const CreateRoomComponent = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-full rounded-[24px] "  style={{
-        backgroundImage: "url(/create/wallpaper1.jpg)",
-        backgroundSize: 'cover',  // This ensures the image keeps its aspect ratio
-        backgroundPosition: 'center', // Centers the image
-        backgroundRepeat: 'no-repeat', // Prevents repeating the image
-        width: '430px',
-        
-      }} >
+    <div
+      className="relative flex flex-col items-center justify-center h-full rounded-[24px]"
+      style={{
+        width: '430px', // Set the width of the container
+        height: '100%', // Set the height of the container
+      }}
+    >
+      {/* Next.js Image with fill layout */}
+      <Image
+        src="/create/wallpaper1.jpg"
+        alt="Background"
+        fill
+        className="rounded-[24px] object-cover" // object-cover for preserving aspect ratio
+        style={{ zIndex: -1 }} // Ensure it's behind other elements
+      />
       {step === 1 && (
         <motion.div
           initial={{ opacity: 0, y: -50 }}
