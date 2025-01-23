@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/ToastContext';
 import { FaCopy } from "react-icons/fa";
 import DraggableCircle from '../drag/drag';
 import Image from 'next/image';
+import BackButton from '../button/BackButton';
  
 
 const CopyMessage = ({ message,copied }) => {
@@ -65,7 +66,7 @@ const CreateRoomComponent = () => {
   const [password, setPassword] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [createdLink,setCreatedLink]=useState("");
-  
+  const [imageLoaded,setImageLoaded]=useState(false);
   const [showShare,setShowShare]=useState(false);
   const { showToast } = useToast();
   const [showNextLink,setShowNextLink]=useState(false);
@@ -135,21 +136,43 @@ const CreateRoomComponent = () => {
   }
 
   return (
-    <div
-      className="relative flex flex-col items-center justify-center h-full rounded-[24px]"
-      style={{
-        width: '430px', // Set the width of the container
-        height: '100%', // Set the height of the container
+    <>
+     {
+      !imageLoaded && (
+        <div
+         className=" flex flex-col absolute items-center bg-white bg-opacity-50 justify-center inset-y-10 rounded-[24px]"
+        style={{
+          width: "430px",
+           
+        }}
+        >
+        </div>
+      )
+     }
+    <motion.div
+    initial={{ opacity: 0, scale: 0.9 }}
+    animate={imageLoaded ? { opacity: 1, scale: 1 } : {}}
+    transition={{ duration: 0.5, ease: "easeInOut" }}
+    className="relative flex flex-col items-center justify-center h-full rounded-[24px]"
+    style={{
+      width: "430px",
+      height: "100%",
+    }}
+  >
+    <BackButton  />
+    <Image
+      src="/create/wallpaper1.jpg"
+      alt="Background"
+      fill
+      onLoad={() => {
+        setTimeout(() => {
+          setImageLoaded(true);
+        }, 300);
       }}
-    >
-      {/* Next.js Image with fill layout */}
-      <Image
-        src="/create/wallpaper1.jpg"
-        alt="Background"
-        fill
-        className="rounded-[24px] object-cover" // object-cover for preserving aspect ratio
-        style={{ zIndex: -1 }} // Ensure it's behind other elements
-      />
+      className="rounded-[24px] object-cover"
+      style={{ zIndex: -1 }}
+    />
+    
       {step === 1 && (
         <motion.div
           initial={{ opacity: 0, y: -50 }}
@@ -223,7 +246,8 @@ const CreateRoomComponent = () => {
           <span>Processing...</span>
         </motion.div>
       )}
-    </div>
+    </motion.div>
+    </>
   );
 };
 

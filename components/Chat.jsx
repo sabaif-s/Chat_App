@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/ToastContext";
 import { motion,AnimatePresence} from "framer-motion";
-import { FaRegCommentDots } from "react-icons/fa";
+import { useSocket } from '@/hooks/SocketContext';
 import { io } from "socket.io-client";
 import { FaCopy } from "react-icons/fa";
 import axios from "axios";
@@ -241,12 +241,13 @@ const Chat = () => {
   const [checkRoom,setCheckRoom]=useState(false);
   const [sender,setSender]=useState(null);
   const [showTyping,setShowTyping]=useState(false);
-  const [fetchBack,setFetchBack]=useState(false);
+  const [fetchBack,setFetchBack]=useState(0);
   const { showToast } = useToast();
   const router = useRouter();
   const socketRef = useRef(null);
   const chatContainerRef = useRef(null);
-
+  const { socket } = useSocket();
+  console.log(socket);
   useEffect(() => {
     if (typeof window !== "undefined") {
       const roomName = localStorage.getItem("myRoom");
@@ -307,46 +308,49 @@ const Chat = () => {
   }, [checkRoom]);
 
   useEffect(() => {
-    const socket = io(`${  process.env.NEXT_PUBLIC_DEPLOYBACKEND}/chat`);
-   
-    socket.on("new_message", (data) => {
-      console.log("new message accessed");
-      const newData = { message: data.message, owner: false};
-      setReceivedData((prev) => [...prev, data.message]);
-      setCollectionData((prev) => [...prev, newData]);
-    });
-    socketRef.current = socket;
-    socketRef.current.emit("send_message", {
-      receiver: "saboo",
-      sender: sender,
-      room: activeRoom,
-      message: inputData,
-    });
+    // const socket = io(`${  process.env.NEXT_PUBLIC_DEPLOYBACKEND}/chat`);
+      
     
-    socketRef.current.emit("typing",{room:activeRoom,typing:false});
-    socket.on("typing",(data)=>{
-      console.log("typing triggered");
-      if(data){
-        if(collectionData.length == 0){
-          setFetchBack(true);
+    if(socket){
+      socket.on("new_message", (data) => {
+        console.log("new message accessed");
+        const newData = { message: data.message, owner: false};
+        setReceivedData((prev) => [...prev, data.message]);
+        setCollectionData((prev) => [...prev, newData]);
+      });
+      // socket.current = socket;
+      socket.emit("send_message", {
+        receiver: "saboo",
+        sender: sender,
+        room: activeRoom,
+        message: inputData,
+      });
+      
+      socket.emit("typing",{room:activeRoom,typing:false});
+      socket.on("typing",(data)=>{
+        console.log("typing triggered");
+        if(data){
+          if(collectionData.length == 0){
+            setFetchBack((prev)=> prev+1);
+          }
+          setShowTyping(true);
         }
-        setShowTyping(true);
+        else{
+          setShowTyping(false);
+        }
+      })
+      const newData = { message: inputData, owner: true };
+      if(inputData != ""){
+        setCollectionData((prev) => [...prev, newData]);
       }
-      else{
-        setShowTyping(false);
-      }
-    })
-    const newData = { message: inputData, owner: true };
-    if(inputData != ""){
-      setCollectionData((prev) => [...prev, newData]);
+      
+      setSendData((prev) => [...prev, inputData]);
+      setInputData("");
+      return () => {
+        socket.off("new_message");
+      };
     }
-    
-    setSendData((prev) => [...prev, inputData]);
-    setInputData("");
-    return () => {
-      socket.off("new_message");
-    };
-  }, []);
+  }, [socket]);
   useEffect(() => {
     // Scroll to the bottom of the chat container when collectionData changes
     if (chatContainerRef.current) {
@@ -357,20 +361,24 @@ const Chat = () => {
     }
   }, [collectionData, showTyping]);
   useEffect(()=>{
+    if(socket){
+
+    
      if(inputData != ""){
-      socketRef.current.emit("typing",{room:activeRoom,typing:true});
+      socket.emit("typing",{room:activeRoom,typing:true});
       // setShowTyping(true);
      }
      else{
-      socketRef.current.emit("typing",{room:activeRoom,typing:false});
+      socket.emit("typing",{room:activeRoom,typing:false});
       // setShowTyping(false);
      }
-  },[inputData]);
+    }
+  },[inputData,socket]);
 
   const handleSendButton = () => {
     if (!inputData.trim()) return;
 
-    socketRef.current.emit("send_message", {
+    socket.emit("send_message", {
       receiver: "saboo",
       sender: sender,
       room: activeRoom,
@@ -392,6 +400,7 @@ const Chat = () => {
      }
     setActiveRoom(element);
     setHideSelection(true);
+    setFetchBack((prev)=> prev+1);
     console.log("collection data:",collectionData);
     setShowChat(true);
   };

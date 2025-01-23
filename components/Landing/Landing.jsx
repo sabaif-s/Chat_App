@@ -29,16 +29,16 @@ const fadeIn = (delay = 0) => ({
     },
 });
 
-const LandingPage = ({height}) => {
+const LandingPage = () => {
     const router=useRouter();
     const controls = useAnimation();
     const [animateStart,setAnimateStart]=useState(false);
     const [displayedText, setDisplayedText] = useState('');
     const [animateInButton,setAnimateInButton]=useState(false);
     const [animateOutTop,setAnimateOutTop]=useState(false);
-    const [mobileHeight,setMobileHeight]=useState(null);
+    
     const [smallMobile,setSmallMobile]=useState(false);
-    const [screenDetected,setScreenDetected]=useState(false);
+    
   const fullText = data.messages.displayText;
    
   useEffect(() => {
@@ -57,16 +57,16 @@ const LandingPage = ({height}) => {
       return () => clearInterval(typingInterval); // Cleanup interval on unmount
     }
   }, [animateStart]);
-  useEffect(()=>{
-      if(height < 700){
-        setScreenDetected(true);
-        setSmallMobile(true);
-      }
-      else{
-        setScreenDetected(true);
-        setSmallMobile(false);
-      }
-  },[height]);
+  // useEffect(()=>{
+  //     if(height < 700){
+  //       setScreenDetected(true);
+  //       setSmallMobile(true);
+  //     }
+  //     else{
+  //       setScreenDetected(true);
+  //       setSmallMobile(false);
+  //     }
+  // },[height]);
     useEffect(()=>{
         setTimeout(() => {
             setAnimateOutTop(true);
@@ -98,7 +98,7 @@ const LandingPage = ({height}) => {
         <>
         
         {
-            screenDetected && (
+            true && (
             
                 <div style={{width:"430px"}} className={`h-full md:rounded-[36px]  bg-fuchsia-500 flex flex-col items-center ${false ? "justify-end gap-y-12":"justify-around"} overflow-hidden`}>
                 <motion.div

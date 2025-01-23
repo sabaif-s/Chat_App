@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useToast } from '@/hooks/ToastContext';
+import BackButton from "../button/BackButton";
 
 
 const JoinComponent = () => {
@@ -18,7 +19,8 @@ const JoinComponent = () => {
   const prevStep = () => setStep((prev) => Math.max(1, prev - 1));
 
   return (
-    <div style={{width:"430px"}} className="h-full overflow-hidden rounded-[36px] flex flex-col items-center justify-center bg-gray-100 bg-opacity-50 p-4">
+    <div style={{width:"430px"}} className="h-full overflow-hidden rounded-[36px] relative flex flex-col items-center justify-center bg-gray-100 bg-opacity-50 p-4">
+      <BackButton/> 
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
