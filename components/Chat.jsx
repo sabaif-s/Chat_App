@@ -72,7 +72,10 @@ const CopyMessage = ({ message,copied }) => {
   );
 };
 const SelectionComponent = ({ elements, onSelect }) => {
-   
+   const [inputSearch,setInputSearch]=useState("");
+   const [elementsNames,setElementsNames]=useState(elements);
+   const [readyRender,setRenderReady]=useState(false);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -83,7 +86,23 @@ const SelectionComponent = ({ elements, onSelect }) => {
       },
     },
   };
-
+   useEffect(()=>{
+     console.log("inputSearch");
+      const newElements=elements.filter((item)=>{
+        return item.toLowerCase().startsWith(inputSearch.toLowerCase());
+      })
+      console.log("New Elements:",newElements);
+      setElementsNames(newElements);
+      
+     
+   },[inputSearch]);
+   useEffect(()=>{
+        
+           if(elements){
+            setElementsNames(elements);
+            setRenderReady(true);
+           }
+   },[elements]);
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
@@ -92,65 +111,73 @@ const SelectionComponent = ({ elements, onSelect }) => {
 
   return (
      <>
-          
-    <motion.div
-      style={{ width: "432px"}}
-      className="h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-green-100 scrollbar-track-blue-100  flex bg-gradient-to-b from-[#9747FF] via-blue-300 to-blue-200 bg-opacity-80 justify-start py-2 flex-col gap-y-4 custom-scrollbar"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      {/* Search Bar */}
-      <motion.div
-        className="bg-white rounded-lg flex px-2 justify-start items-center gap-x-2"
-        variants={itemVariants}
-      >
-        <img src="/chat/search.png" className="w-10 h-10 object-cover" alt="" />
-        <input
-          type="text"
-          placeholder="Search"
-          className="text-gray-500 text-lg w-full bg-white h-full outline-none focus:ring-0 focus:border-transparent"
-        />
-      </motion.div>
-
-      {/* Chat List */}
-      <motion.div
-        className="w-full bg-white rounded-lg py-4 px-2 flex flex-col items-start justify-start gap-y-4"
-        variants={itemVariants}
-      >
-        <span className="text-black text-xl">People</span>
-        <div className="flex flex-col w-full">
           {
-            elements.map((element,index)=>(
+            readyRender && (
               <motion.div
-              onClick={() => {
-                console.log("selected in child");
-                onSelect(element, index);
-              }}
-              key={index}
-              className="flex cursor-pointer text-gray-500 w-full border-b-2 border-gray-200 flex-row justify-between gap-x-2 items-center"
-              variants={itemVariants}
-              whileHover={{ scale: 1.02 }}
+              style={{ width: "432px"}}
+              className="h-full overflow-y-scroll rounded-[24px] scrollbar-thin scrollbar-thumb-green-100 scrollbar-track-blue-100  flex bg-gradient-to-b from-[#9747FF] via-blue-300 to-blue-200 bg-opacity-80 justify-start py-2 flex-col gap-y-4 custom-scrollbar"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
             >
-              <div className="flex flex-row items-center py-2 justify-start gap-x-2">
-                <img src="/chat/profile.png" className="w-12 h-12 object-cover" alt="" />
-                <div className="flex flex-col">
-                  <span className="text-black text-lg">  {element}</span>
-                  <span className="text-gray-500 text-sm">April fool's day</span>
+              {/* Search Bar */}
+              <motion.div
+                className="bg-white rounded-lg flex px-2 justify-start items-center gap-x-2"
+                variants={itemVariants}
+              >
+                <img src="/chat/search.png" className="w-10 h-10 object-cover" alt="" />
+                <input
+                value={inputSearch}
+                onChange={(e)=>{
+                  setInputSearch(e.target.value);
+                }}
+                  type="text"
+                  placeholder="Search"
+                  className="text-gray-500 text-lg w-full bg-white h-full outline-none focus:ring-0 focus:border-transparent"
+                />
+              </motion.div>
+        
+              {/* Chat List */}
+              <motion.div
+                className="w-full bg-white rounded-lg py-4 px-2 flex flex-col items-start justify-start gap-y-4"
+                variants={itemVariants}
+              >
+                <span className="text-black text-xl">People</span>
+                <div className="flex flex-col w-full">
+                  {
+                    elementsNames.map((element,index)=>(
+                      <motion.div
+                      onClick={() => {
+                        console.log("selected in child");
+                        onSelect(element, index);
+                      }}
+                      key={index}
+                      className="flex cursor-pointer text-gray-500 w-full border-b-2 border-gray-200 flex-row justify-between gap-x-2 items-center"
+                      variants={itemVariants}
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <div className="flex flex-row items-center py-2 justify-start gap-x-2">
+                        <img src="/chat/profile.png" className="w-12 h-12 object-cover" alt="" />
+                        <div className="flex flex-col">
+                          <span className="text-black text-lg">  {element}</span>
+                          {/* <span className="text-gray-500 text-sm">April fool's day</span> */}
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        {/* <span>Today,9.52pm</span> */}
+                        <img src="/chat/doubleThick.png" className="w-8 h-8" alt="" />
+                      </div>
+                    </motion.div>
+                    ))
+                  }
+                 
+                 
                 </div>
-              </div>
-              <div className="flex flex-col items-center">
-                <span>Today,9.52pm</span>
-                <img src="/chat/doubleThick.png" className="w-8 h-8" alt="" />
-              </div>
+              </motion.div>
             </motion.div>
-            ))
+            )
           }
-         
-         
-        </div>
-      </motion.div>
-    </motion.div>
+    
     </>
   );
 };
@@ -207,13 +234,14 @@ const Chat = () => {
   const [collectionData, setCollectionData] = useState([]);
   const [inputData, setInputData] = useState("");
   const [showChat, setShowChat] = useState(false);
-  const [hideSelection, setHideSelection] = useState(false);
+  const [hideSelection, setHideSelection] = useState(true);
   const [activeRoom, setActiveRoom] = useState("");
   const [arrayRoom, setArrayRoom] = useState([]);
   const [roomCollections,setRoomCollections]=useState([]);
   const [checkRoom,setCheckRoom]=useState(false);
   const [sender,setSender]=useState(null);
   const [showTyping,setShowTyping]=useState(false);
+  const [fetchBack,setFetchBack]=useState(false);
   const { showToast } = useToast();
   const router = useRouter();
   const socketRef = useRef(null);
@@ -262,7 +290,7 @@ const Chat = () => {
   if(activeRoom != ""){
     getDataBackEnd();
   }
-  },[activeRoom]);
+  },[activeRoom,fetchBack]);
   useEffect(()=>{
   console.log("Sender");
   console.log(sender);
@@ -272,6 +300,9 @@ const Chat = () => {
     if (checkRoom && arrayRoom.length == 0) {
       showToast("You Have No Active Chat Room!", "warning");
       router.push("/join");
+    }
+    else{
+      setHideSelection(false);
     }
   }, [checkRoom]);
 
@@ -296,6 +327,9 @@ const Chat = () => {
     socket.on("typing",(data)=>{
       console.log("typing triggered");
       if(data){
+        if(collectionData.length == 0){
+          setFetchBack(true);
+        }
         setShowTyping(true);
       }
       else{
@@ -437,13 +471,14 @@ const Chat = () => {
               <img
                 onClick={() => {
                   setHideSelection(false);
+                  setCollectionData([]);
                   setShowChat(false);
                 }}
                 src="/chat/close.png"
                 className="w-10 h-10 object-cover cursor-pointer"
                 alt=""
               />
-              <span className="text-lg text-black font-semibold">Robert Fox</span>
+              <span className="text-lg text-black font-semibold">{activeRoom}</span>
             </div>
       
             {/* Chat Messages */}

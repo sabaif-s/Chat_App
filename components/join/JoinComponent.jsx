@@ -151,8 +151,8 @@ const joinHandle = async (joinUser,password,roomName,router,showToast) => {
             return;
         }
         const myRoom=localStorage.getItem("myRoom");
-        if(myRoom == roomName){
-          showToast("Its Your Room");
+        if (myRoom == roomName) {
+          showToast("You are already in this room.", "info");
           return router.push("/chat");
         }
         const response= await axios.post(`${  process.env.NEXT_PUBLIC_DEPLOYBACKEND}/checkChat`,
@@ -181,16 +181,16 @@ const joinHandle = async (joinUser,password,roomName,router,showToast) => {
           
       } catch (error) {
         const status=error.response.status;
-        if(status == 401){
-            console.log("unauthorized");
-            showToast("Unauthorized","error");
+        if (status === 401) {
+          console.error("Unauthorized access attempt.");
+          showToast("You are not authorized", "error");
         }
         else if(status == 404){
-            showToast("No Room 404","error");
+          showToast(`${roomName} does not exist.`, "error");
             console.log("not found error");
         }
         else{
-            console.log(error);
+          showToast(`ERROR`, "error");
         }
          console.log(error);
       }
