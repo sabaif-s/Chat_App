@@ -5,22 +5,21 @@ import axios from "axios";
 import { useToast } from '@/hooks/ToastContext';
 import BackButton from "../button/BackButton";
 
-
 const JoinComponent = () => {
   const [step, setStep] = useState(1);
   const [roomName, setRoomName] = useState("");
   const [joinUser, setJoinUser] = useState("");
   const [password, setPassword] = useState("");
-  const router=useRouter();
-  const {showToast} =useToast();
- 
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const { showToast } = useToast();
 
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => Math.max(1, prev - 1));
 
   return (
-    <div style={{width:"430px"}} className="h-full overflow-hidden rounded-[36px] relative flex flex-col items-center justify-center bg-gray-100 bg-opacity-50 p-4">
-      <BackButton display={"absolute"} /> 
+    <div style={{ width: "430px" }} className="h-full overflow-hidden rounded-[36px] relative flex flex-col items-center justify-center bg-gray-100 bg-opacity-50 p-4">
+      <BackButton display={"absolute"} />
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -47,9 +46,12 @@ const JoinComponent = () => {
             password={password}
             setPassword={setPassword}
             prevStep={prevStep}
-            onSubmit={()=>{
-                joinHandle(joinUser,password,roomName,router,showToast);
+            onSubmit={() => {
+              setIsLoading(true);
+              joinHandle(joinUser, password, roomName, router, showToast)
+                .finally(() => setIsLoading(false));
             }}
+            isLoading={isLoading}
           />
         )}
       </motion.div>
@@ -113,7 +115,7 @@ const StepTwo = ({ joinUser, setJoinUser, prevStep, nextStep }) => (
   </motion.div>
 );
 
-const StepThree = ({ password, setPassword, prevStep, onSubmit }) => (
+const StepThree = ({ password, setPassword, prevStep, onSubmit, isLoading }) => (
   <motion.div
     initial={{ opacity: 0, y: 100 }}
     animate={{ opacity: 1, y: 0 }}
@@ -137,66 +139,64 @@ const StepThree = ({ password, setPassword, prevStep, onSubmit }) => (
       </button>
       <button
         onClick={onSubmit}
-        className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition"
+        className={`py-2 px-4 rounded transition ${isLoading ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'} text-white`}
+        disabled={isLoading}
       >
-        Join Room
+        {isLoading ? 'Joining...' : 'Join Room'}
       </button>
     </div>
   </motion.div>
 );
 
-const joinHandle = async (joinUser,password,roomName,router,showToast) => {
-   
-    try {
-        if(!roomName || !joinUser || !password){
-             showToast("Write All Credentials","error");
-            return;
+const joinHandle = async (joinUser, password, roomName, router, showToast) => {
+  try {
+    if (!roomName || !joinUser || !password) {
+      showToast("Write All Credentials", "error");
+      return;
+    }
+    const myRoom = localStorage.getItem("myRoom");
+    if (myRoom == roomName) {
+      showToast("You are already in this room.", "info");
+      return router.push("/chat");
+    }
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_DEPLOYBACKEND}/checkChat`,
+      {
+        roomName,
+        joinUser,
+        password
+      },
+      {
+        headers: {
+          "Content-Type": "application/json"
         }
-        const myRoom=localStorage.getItem("myRoom");
-        if (myRoom == roomName) {
-          showToast("You are already in this room.", "info");
-          return router.push("/chat");
-        }
-        const response= await axios.post(`${  process.env.NEXT_PUBLIC_DEPLOYBACKEND}/checkChat`,
-          {
-            roomName,
-            joinUser,
-            password
-          },
-          {
-            headers:{
-              "Content-Type":"application/json"
-            }
-          }
-         )
-        //  setCreatedLink(response.data.chatRoom.link);
-        const savedObject={
-          joinUser,
-          roomName,
-        }
-        localStorage.setItem("joinedRoom",JSON.stringify(savedObject));
-        
-         router.push("/chat");
-        console.log(savedObject);
-      
-         console.log(response.data);
-          
-      } catch (error) {
-        const status=error.response.status;
-        if (status === 401) {
-          console.error("Unauthorized access attempt.");
-          showToast("You are not authorized", "error");
-        }
-        else if(status == 404){
-          showToast(`${roomName} does not exist.`, "error");
-            console.log("not found error");
-        }
-        else{
-          showToast(`ERROR`, "error");
-        }
-         console.log(error);
       }
-   
+    )
+    const savedObject = {
+      joinUser,
+      roomName,
+    }
+    localStorage.setItem("joinedRoom", JSON.stringify(savedObject));
+
+    router.push("/chat");
+    console.log(savedObject);
+
+    console.log(response.data);
+
+  } catch (error) {
+    const status = error.response.status;
+    if (status === 401) {
+      console.error("Unauthorized access attempt.");
+      showToast("You are not authorized", "error");
+    }
+    else if (status == 404) {
+      showToast(`${roomName} does not exist.`, "error");
+      console.log("not found error");
+    }
+    else {
+      showToast(`ERROR`, "error");
+    }
+    console.log(error);
+  }
 };
 
 export default JoinComponent;
