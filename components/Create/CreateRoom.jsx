@@ -159,7 +159,7 @@ const CreateRoomComponent = () => {
       height: "100%",
     }}
   >
-    <BackButton  />
+    <BackButton  display={"absolute"} />
     <Image
       src="/create/wallpaper1.jpg"
       alt="Background"

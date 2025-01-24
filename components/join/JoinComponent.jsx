@@ -20,7 +20,7 @@ const JoinComponent = () => {
 
   return (
     <div style={{width:"430px"}} className="h-full overflow-hidden rounded-[36px] relative flex flex-col items-center justify-center bg-gray-100 bg-opacity-50 p-4">
-      <BackButton/> 
+      <BackButton display={"absolute"} /> 
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
