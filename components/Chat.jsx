@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/ToastContext";
 import { motion,AnimatePresence} from "framer-motion";
 import { useSocket } from '@/hooks/SocketContext';
-import { io } from "socket.io-client";
+ 
 import { FaCopy } from "react-icons/fa";
 import axios from "axios";
+import BackButton from "./button/BackButton";
 
 const CopyMessage = ({ message,copied }) => {
   const [isCopied, setIsCopied] = useState(false);
@@ -115,11 +116,12 @@ const SelectionComponent = ({ elements, onSelect }) => {
             readyRender && (
               <motion.div
               style={{ width: "432px"}}
-              className="h-full overflow-y-scroll py-12 px-4 rounded-[24px] scrollbar-thin scrollbar-thumb-green-100 scrollbar-track-blue-100  flex bg-gradient-to-b from-[#9747FF] via-blue-300 to-blue-200 bg-opacity-80 justify-start py-2 flex-col gap-y-4 custom-scrollbar"
+              className="h-full overflow-y-scroll relative py-12 px-4 rounded-[24px] scrollbar-thin scrollbar-thumb-green-100 scrollbar-track-blue-100  flex bg-gradient-to-b from-[#9747FF] via-blue-300 to-blue-200 bg-opacity-80 justify-start py-2 flex-col gap-y-4 custom-scrollbar"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
             >
+            <BackButton/>
               {/* Search Bar */}
               <motion.div
                 className="bg-white rounded-lg flex px-2 justify-start items-center gap-x-2"
