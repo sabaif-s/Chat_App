@@ -121,7 +121,7 @@ const SelectionComponent = ({ elements, onSelect }) => {
               initial="hidden"
               animate="visible"
             >
-            <BackButton key={"back"} display={"relative"} />
+            <BackButton key={"back"} display={"relative"} from={"chat"} />
               {/* Search Bar */}
               <motion.div
                 className="bg-white rounded-lg flex px-2 justify-start items-center gap-x-2"

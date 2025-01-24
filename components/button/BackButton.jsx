@@ -3,12 +3,18 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
-const BackButton = ({display}) => {
+const BackButton = ({display,from}) => {
   const router = useRouter();
 
   const handleBack = () => {
     if (window.history.length > 1) {
-      router.back(); // Go back in history
+      if(from == "join"){
+        router.push("/");
+      }
+      else{
+        router.back(); 
+      }
+      // Go back in history
     } else {
       router.push("/"); // Fallback to homepage
     }
