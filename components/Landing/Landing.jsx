@@ -21,20 +21,25 @@ const LandingPage = () => {
    
     const [displayedText, setDisplayedText] = useState('');
     const [animateInButton,setAnimateInButton]=useState(false);
-    const [sessionStored,setSessionStored]=useState(()=>{
-        const saved=sessionStorage.getItem("landing");
-        return saved ? true:false;
-    });
-    const [animateOutTop,setAnimateOutTop]=useState(sessionStored);
-    const [animateStart,setAnimateStart]=useState(sessionStored);
+    const [render,setRender]=useState(false);
+    
+    const [animateOutTop,setAnimateOutTop]=useState(false);
+    const [animateStart,setAnimateStart]=useState(false);
+    const [sessionStored,setSessionStored]=useState(false);
     
     const [smallMobile,setSmallMobile]=useState(false);
    
     
   const fullText = data.messages.displayText;
-   
+   useEffect(()=>{
+    
+    setTimeout(() => {
+      setRender(true);
+    }, 300);
+     
+   },[sessionStored]);
   useEffect(() => {
-    if (animateStart && !sessionStored ) { // Run only if animateStart is true
+    if (animateStart  && !sessionStored) { // Run only if animateStart is true
       let currentIndex = 0;
           console.log(ContextData);
       const typingInterval = setInterval(() => {
@@ -62,8 +67,9 @@ const LandingPage = () => {
      }, (3000));
    },  5000);
       }
-        
-     if(sessionStored){
+      const sessionStoreds=sessionStorage.getItem("landing");
+      setSessionStored(sessionStoreds);
+     if(sessionStoreds){
         console.log("there is a session");
         setAnimateInButton(true);
         setDisplayedText(fullText);
@@ -100,9 +106,9 @@ const LandingPage = () => {
         <>
         
         {
-            true && (
+            render && (
             
-                <div style={{width:"430px"}} className={`h-full md:rounded-[36px]  bg-fuchsia-500 flex flex-col items-center ${false ? "justify-end gap-y-12":"justify-around"} overflow-hidden`}>
+                <div style={{width:"430px"}} className={`h-full md:rounded-[36px]  bg-fuchsia-500 flex flex-col items-center ${render ? "opacity-100":"opacity-0"} ${false ? "justify-end gap-y-12":"justify-around"} overflow-hidden`}>
                 <motion.div
          className="flex flex-col gap-y-4 items-center"
          initial="hidden"
@@ -173,11 +179,15 @@ const LandingPage = () => {
      src="/landing/sabk.jpeg"
      className='rounded-full absolute w-16 h-16 -bottom-10'
      alt=""
-     initial="hidden"
+     initial={{ opacity:0}}
      animate={{
-       y: [0, -10, 0], // Float effect
-     }}
+       y: [0, -10, 0],
+       opacity:1
+        // Float effect
+     }
+    }
      transition={{
+      delay:1,
        duration: 2, // Time for one cycle
        repeat: 2, // Repeat the animation 2 times
        repeatType: "loop", // Ensure it loops for the specified repeats
