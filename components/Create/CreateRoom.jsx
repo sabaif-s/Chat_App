@@ -27,7 +27,7 @@ const CopyMessage = ({ message,copied }) => {
   };
 
   return (
-    <div className="flex items-center relative mt-8 space-x-4 p-4 bg-gray-100 rounded-lg shadow-md">
+    <div className="flex items-center absolute bottom-48 space-x-4 p-4 bg-gray-100 rounded-lg shadow-md">
       {/* Message Display */}
       <p className="text-gray-700 text-lg flex-1">{message}</p>
 
@@ -240,7 +240,7 @@ const CreateRoomComponent = () => {
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col items-center justify-center text-red-400"
+          className="flex flex-col items-center justify-center absolute text-red-400"
         >
           <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4"></div>
           <span>Processing...</span>

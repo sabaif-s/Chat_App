@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/ToastContext";
 import { motion,AnimatePresence} from "framer-motion";
 import { useSocket } from '@/hooks/SocketContext';
+import ChatInput from "./emoji/Emoji";
  
 import { FaCopy } from "react-icons/fa";
 import axios from "axios";
@@ -244,12 +245,19 @@ const Chat = () => {
   const [sender,setSender]=useState(null);
   const [showTyping,setShowTyping]=useState(false);
   const [fetchBack,setFetchBack]=useState(0);
+  const [emojiPickerShows,setShowEmojiPickerShow]=useState(false);
   const { showToast } = useToast();
   const router = useRouter();
   const socketRef = useRef(null);
   const chatContainerRef = useRef(null);
   const { socket } = useSocket();
   console.log(socket);
+  const acceptEmojiMessage=(emoji)=>{
+    setInputData((prev)=> prev+emoji )
+  }
+  const hideEmoji=()=>{
+    setShowEmojiPickerShow(false);
+  }
   useEffect(() => {
     if (typeof window !== "undefined") {
       const roomName = localStorage.getItem("myRoom");
@@ -379,7 +387,7 @@ const Chat = () => {
 
   const handleSendButton = () => {
     if (!inputData.trim()) return;
-
+    setShowEmojiPickerShow(false);
     socket.emit("send_message", {
       receiver: "saboo",
       sender: sender,
@@ -412,6 +420,11 @@ const Chat = () => {
       {!hideSelection && (
         <SelectionComponent elements={arrayRoom}  onSelect={handleSelect} />
       )}
+      {
+        emojiPickerShows && (
+          <ChatInput acceptEmoji={acceptEmojiMessage} hideEmoji={hideEmoji} />
+        )
+      }
       {false && (
          <> 
         <div className="flex flex-col hidden h-screen hidden bg-gray-100 ">
@@ -558,13 +571,26 @@ const Chat = () => {
               className=" h-20 w-full px-6 z-40 absolute bottom-4 left-0"
             >
               <div className="w-full bg-[#F0F5FA] h-full rounded-lg px-2 flex justify-start items-center gap-x-2">
-                <img src="/chat/emoji.png" className="w-6 h-6 object-cover cursor-pointer" alt="" />
+                <img 
+                onClick={()=>{
+                  if(emojiPickerShows){
+                    setShowEmojiPickerShow(false);
+                  }
+                  else{
+                    setShowEmojiPickerShow(true);
+                  }
+                }}
+                src="/chat/emoji.png" className="w-6 h-6 object-cover cursor-pointer" alt="" />
                 <div className="flex items-center w-full justify-center h-full">
                   <textarea
                     value={inputData}
                     onChange={(e) => setInputData(e.target.value)}
+                    onFocus={()=>{
+                      setShowEmojiPickerShow(false);
+                    }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
+                       
                         e.preventDefault();
                         if (inputData) handleSendButton();
                       }
