@@ -495,7 +495,7 @@ const Chat = () => {
             {/* Chat Messages */}
             <div
             ref={chatContainerRef}
-            className="w-full flex flex-col overflow-y-auto scrollbar-hide gap-y-4">
+            className="w-full flex flex-col overflow-y-auto pt-4 scrollbar-hide gap-y-4">
               {collectionData.length > 0 &&
                 collectionData.map((item, index) => (
                   <motion.div
