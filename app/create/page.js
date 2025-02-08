@@ -38,44 +38,7 @@ function  CreateRoom() {
         <CreateRoomComponent/>
       )
     }
-     {
-      false && (
-        <div className='flex flex-col gap-y-4 text-red-400' >
-        <input 
-        onChange={(e)=>{
-                  setRoomName(e.target.value)
-        }}
-        value={roomName}
-
-         type="text" placeholder="Room Name" />
-        <input
-        onChange={(e)=>{
-            setJoinUser(e.target.value)
-  }}
-  value={joinUser}
-        type="text" placeholder="User Name" autoComplete='off' />
-        <input
-         onChange={(e)=>{
-            setPassword(e.target.value)
-  }}
-  value={password}
-        type="text" placeholder='Password' autoComplete="off" />
-        <button
-         onClick={createButtonClicked}
-        >Create Chat</button>
-        <div>
-            <button>Copy Link</button>
-            {
-              createdLink != "" && (
-                <p>
-                  {createdLink}
-                </p>
-              )
-            }
-        </div>
-    </div>
-      )
-     }
+    
    
     </>
   )

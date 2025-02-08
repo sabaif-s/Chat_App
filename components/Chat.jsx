@@ -116,7 +116,7 @@ const SelectionComponent = ({ elements, onSelect }) => {
             readyRender && (
               <motion.div
               style={{ width: "432px"}}
-              className="h-full overflow-y-scroll relative py-12 px-4 rounded-[24px] scrollbar-thin scrollbar-thumb-green-100 scrollbar-track-blue-100  flex bg-gradient-to-b from-[#9747FF] via-blue-300 to-blue-200 bg-opacity-80 justify-start py-2 flex-col gap-y-4 custom-scrollbar"
+              className=" overflow-y-scroll   scrollbar-hide scrollbar-thin scrollbar-thumb-green-100 scrollbar-track-blue-100 h-full md:rounded-[36px] relative py-12 px-4 rounded-[24px]  flex bg-gradient-to-b from-[#9747FF] via-blue-300 to-blue-200 bg-opacity-80 justify-start py-2 flex-col gap-y-4 "
               variants={containerVariants}
               initial="hidden"
               animate="visible"
@@ -145,7 +145,7 @@ const SelectionComponent = ({ elements, onSelect }) => {
                 variants={itemVariants}
               >
                 <span className="text-black text-xl">People</span>
-                <div className="flex flex-col w-full">
+                <div className="flex flex-col w-full  ">
                   {
                     elementsNames.map((element,index)=>(
                       <motion.div

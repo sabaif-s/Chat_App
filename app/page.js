@@ -1,8 +1,8 @@
 "use client";
-import {useState, useRef } from "react";
+import {useState } from "react";
 import LandingPage from "@/components/Landing/Landing";
 export default function Home() {
-  const socketRef = useRef(null);
+  
   const [heightState,setHeightState]=useState(null);
    
   return (
