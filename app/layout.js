@@ -10,7 +10,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-      style={{backgroundImage:`url(/landing/chat.jpg)` , backgroundSize:"cover" ,backgroundPosition:"center" }} 
+      style={{backgroundImage:`url(/landing/chat.webp)` , backgroundSize:"cover" ,backgroundPosition:"center" }} 
       className="w-full h-screen overflow-hidden flex items-end justify-center md:py-4">
         <LandingContext>
     
