@@ -2,6 +2,7 @@ import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { ToastProvider } from '@/hooks/ToastContext';
 import { SocketProvider } from '@/hooks/SocketContext';
+import LandingContext from '@/hooks/LandingContext';
 import 'react-toastify/dist/ReactToastify.css';
 import "./globals.css";
 
@@ -11,6 +12,8 @@ export default function RootLayout({ children }) {
       <body
       style={{backgroundImage:`url(/landing/chat.jpg)` , backgroundSize:"cover" ,backgroundPosition:"center" }} 
       className="w-full h-screen overflow-hidden flex items-end justify-center md:py-4">
+        <LandingContext>
+    
            <SocketProvider>
         <ToastProvider>
           {children}
@@ -30,6 +33,7 @@ export default function RootLayout({ children }) {
           />
         </ToastProvider>
         </SocketProvider>
+        </LandingContext>
       </body>
     </html>
   );

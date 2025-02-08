@@ -1,23 +1,9 @@
 "use client";
 import React, { useEffect,useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { easeInOut, motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
+import { ContextData } from '@/hooks/LandingContext';
 import data from "./Data.json";
-
-
-const typingAnimation = {
-    hidden: { width: "auto" },
-    visible: {
-        width: "auto",
-        transition: {
-            type: "spring",
-            stiffness: 50,
-            delay: 12.5,
-            duration: 2,
-        },
-    },
-};
-
 const fadeIn = (delay = 0) => ({
     hidden: { opacity: 0 },
     visible: {
@@ -32,19 +18,25 @@ const fadeIn = (delay = 0) => ({
 const LandingPage = () => {
     const router=useRouter();
     const controls = useAnimation();
-    const [animateStart,setAnimateStart]=useState(false);
+   
     const [displayedText, setDisplayedText] = useState('');
     const [animateInButton,setAnimateInButton]=useState(false);
-    const [animateOutTop,setAnimateOutTop]=useState(false);
+    const [sessionStored,setSessionStored]=useState(()=>{
+        const saved=sessionStorage.getItem("landing");
+        return saved ? true:false;
+    });
+    const [animateOutTop,setAnimateOutTop]=useState(sessionStored);
+    const [animateStart,setAnimateStart]=useState(sessionStored);
     
     const [smallMobile,setSmallMobile]=useState(false);
+   
     
   const fullText = data.messages.displayText;
    
   useEffect(() => {
-    if (animateStart) { // Run only if animateStart is true
+    if (animateStart && !sessionStored ) { // Run only if animateStart is true
       let currentIndex = 0;
-  
+          console.log(ContextData);
       const typingInterval = setInterval(() => {
         if (currentIndex < fullText.length - 1) {
           setDisplayedText((prev) => prev + fullText[currentIndex]);
@@ -57,27 +49,35 @@ const LandingPage = () => {
       return () => clearInterval(typingInterval); // Cleanup interval on unmount
     }
   }, [animateStart]);
-  // useEffect(()=>{
-  //     if(height < 700){
-  //       setScreenDetected(true);
-  //       setSmallMobile(true);
-  //     }
-  //     else{
-  //       setScreenDetected(true);
-  //       setSmallMobile(false);
-  //     }
-  // },[height]);
+ 
     useEffect(()=>{
+      function  startAnimation() {
         setTimeout(() => {
-            setAnimateOutTop(true);
-           },4000);
+          setAnimateOutTop(true);
+         },4000);
+   setTimeout(() => {
+     setAnimateStart(true);
      setTimeout(() => {
-       setAnimateStart(true);
-       
-       setTimeout(() => {
-         setAnimateInButton(true);
-       }, (3000));
-     },  5000);
+       setAnimateInButton(true);
+     }, (3000));
+   },  5000);
+      }
+        
+     if(sessionStored){
+        console.log("there is a session");
+        setAnimateInButton(true);
+        setDisplayedText(fullText);
+        setTimeout(() => {
+          setAnimateOutTop(true);
+         },4000);
+   setTimeout(() => {
+     setAnimateStart(true);
+   },  5000);
+     }
+     else {
+      startAnimation();
+     }
+    
  },[]);
  const fadeInTwo = (duration) => ({
     visible: { opacity: 1, y: 0, transition: { duration } },
@@ -85,13 +85,15 @@ const LandingPage = () => {
   });
     useEffect(() => {
         const sequence = async () => {
-            await controls.start(fadeIn(10)); // Delay for 10 seconds
+            await controls.start(fadeIn(sessionStored ? 10:1)); // Delay for 10 seconds
             controls.start({
                 opacity: 1,
                 transition: { duration: 1 },
             });
         };
         sequence();
+
+        return ()=> sessionStorage.setItem("landing",JSON.stringify({displayedText}));
     }, [controls]);
 
     return (
@@ -105,7 +107,7 @@ const LandingPage = () => {
          className="flex flex-col gap-y-4 items-center"
          initial="hidden"
          animate={animateOutTop ? "hidden" : "visible"} // Switch animation based on state
-         variants={fadeInTwo(0.5)}
+         variants={fadeInTwo(sessionStored ? 0:0.5)}
        >
          <span className="text-gray-200 text-2xl">{data.header.title}</span>
          <span className="text-4xl font-bold text-white tracking-wider">{data.header.subtitle}</span>
@@ -114,38 +116,38 @@ const LandingPage = () => {
              <motion.div
                  initial="hidden"
                  animate="visible"
-                 variants={fadeIn(2)}
+                 variants={fadeIn(sessionStored ? 0:2)}
              >
                  <div
-                     className="w-full h-full relative transform scale-50 transition-transform duration-500 hover:scale-100"
+                     className={`w-full h-full ${sessionStored ? "":" transform transition-transform duration-500"} relative  scale-50  hover:scale-100`}
                      style={{
                          transform: "translateZ(-500px)",
-                         transition: "transform 0.5s ease-in-out",
+                         transition: `transform ${sessionStored ? "0s":"0.5s"}  ease-in-out`,
                      }}
                  >
                      <motion.img
                          src="/landing/mobile2.jpg"
                          alt=""
                          className="w-full h-auto transform transition-transform duration-500 object-cover"
-                         initial={{ x: -100 }}
+                         initial={{ x: sessionStored ? 0:-100 }}
                          animate={{ x: 0 }}
-                         transition={{ delay: 1, duration: 1 }}
+                         transition={{ delay: sessionStored ? 0:1, duration: 1 }}
                      />
                      <motion.img
                          src="/landing/chat1.jpg"
                          alt=""
                          className={` ${smallMobile ? "w-24":"w-32"} h-auto transform transition-transform duration-500 absolute top-2 left-2 object-cover`}
-                         initial={{ opacity:0, scale:0.9 }}
+                         initial={{ opacity:0, scale:sessionStored ? 1:0.9 }}
                          animate={{ opacity:1,scale:1 }}
-                         transition={{ delay: 2.5, duration: 2 , ease:"easeInOut" }}
+                         transition={{ delay: sessionStored ? 0:2.5, duration: 2 , ease:"easeInOut" }}
                      />
                      <motion.img
                          src="/landing/chat2.jpg"
                          alt=""
                          className={` ${smallMobile ? "w-24 top-20":"w-32 top-20"} h-auto transform transition-transform duration-500 absolute  right-2 object-cover`}
-                         initial={{ opacity:0, scale:0.9 }}
+                         initial={{ opacity:0, scale:sessionStored ? 1:0.9 }}
                          animate={{ opacity:1,scale:1 }}
-                         transition={{ delay: 2.5, duration: 2 , ease:"easeInOut" }}
+                         transition={{ delay: sessionStored ? 0:2.5, duration: 2 , ease:"easeInOut" }}
                      />
                      <motion.img
                          src="/landing/chat3.jpg"
@@ -153,7 +155,7 @@ const LandingPage = () => {
                          className={` ${smallMobile ? "w-24 top-32":"w-32 top-40"}  h-20 transform transition-transform duration-500 absolute  left-2 object-cover`}
                          initial={{ opacity:0, scale:0.9 }}
                          animate={{ opacity:1,scale:1 }}
-                         transition={{ delay: 2.5, duration: 2 , ease:"easeInOut" }}
+                         transition={{ delay: sessionStored ? 0:2.5, duration: 2 , ease:"easeInOut" }}
                      />
                      {
                          animateStart && (
@@ -162,9 +164,9 @@ const LandingPage = () => {
                           src="/landing/messageWriter.jpg"
                          alt=""
                          className="w-2/3 h-auto transform rounded-lg transition-transform duration-500 object-cover" 
-                         initial={{ opacity:0, scale:0.9 }}
+                         initial={{ opacity:0, scale:sessionStored ? 1:0.9 }}
                          animate={{ opacity:1,scale:1 }}
-                         transition={{ delay: 1, duration: 2 , ease:"easeInOut" }}
+                         transition={{ delay: sessionStored ? 1:0, duration: sessionStored ? 2:0.5, ease:"easeInOut" }}
                      />
       <div className=''>
    <motion.img
@@ -179,7 +181,7 @@ const LandingPage = () => {
        duration: 2, // Time for one cycle
        repeat: 2, // Repeat the animation 2 times
        repeatType: "loop", // Ensure it loops for the specified repeats
-       ease: "easeInOut", // Smooth transition
+       ease: "easeInOut", 
      }}
    />
  </div>               
@@ -242,7 +244,7 @@ const LandingPage = () => {
              <motion.div
                  initial="hidden"
                  animate="visible"
-                 variants={fadeIn(2)}
+                 variants={fadeIn(sessionStored ? 0:2)}
                  className='px-4'
              >
                <span className={` ${smallMobile ? "text-lg":"text-2xl"} text-gray-200 word-break `} > {data.header.description}</span>   
